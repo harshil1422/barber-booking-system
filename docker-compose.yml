@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+  gateway:
+    build: ./api-gateway
+    ports:
+      - "9090:9090"
+    depends_on:
+      - shop-service
+
+  shop-service:
+    build: ./shop-service
+    ports:
+      - "8089:8089"
+    environment:
+      DB_URL: jdbc:mysql://shop-db:3306/shopdb
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - shop-db
+
+  shop-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopdb

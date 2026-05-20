@@ -1,0 +1,18 @@
+server:
+  port: 9090
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+spring:
+  application:
+    name: barberShopGateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: shop-service
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/shop/**
