@@ -1,7 +1,7 @@
 name: barber booking service CI
 on:
   push:
-    banches: [main]
+    branches: [main]
   pull_request:
     branches: [main]
   
@@ -16,4 +16,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build with maven
-        run: mvn clean install -DskipTests
+        run: |
+          cd barberService
+          mvn clean install -DskipTests
