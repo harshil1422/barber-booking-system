@@ -9,13 +9,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build with maven
+
+       #Discovery servr
+      - name: Build Discovery Server
+        run: |
+         cd discovery-server
+         mvn clean install -DskipTests 
+
+      #API Gateway
+      - name: Build API Gateway
+        run: |
+         cd apiGateWay
+         mvn clean install -DskipTests
+
+      #Barber service    
+      - name: Build Barber service  
         run: |
           cd barberService
           mvn clean install -DskipTests
+        
