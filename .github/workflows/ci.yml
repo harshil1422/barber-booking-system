@@ -21,16 +21,20 @@ jobs:
         run: |
          cd discovery-server
          mvn clean install -DskipTests 
+         docker build -t discovery-server
+         
 
       #API Gateway
       - name: Build API Gateway
         run: |
          cd apiGateWay
          mvn clean install -DskipTests
+         docker build -t api-gateWay
 
       #Barber service    
       - name: Build Barber service  
         run: |
           cd barberService
           mvn clean install -DskipTests
+          docker build -t barber-service .
         
