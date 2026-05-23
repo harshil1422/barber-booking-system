@@ -91,11 +91,11 @@ jobs:
           path: barberService/target/*.jar
 
   build-appointment-service:
-    name: Build — appoinmentservice
+    name: Build — appoimentservice
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: appoinmentservice
+        working-directory: appoimentservice
     steps:
       - uses: actions/checkout@v4
 
@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: appointment-service-jar
-          path: appoinmentservice/target/*.jar
+          path: appoimentservice/target/*.jar
 
   # ─────────────────────────────────────────────
   # JOB 2: Docker build + push (only on main)
