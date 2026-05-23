@@ -65,12 +65,12 @@ jobs:
           name: api-gateway-jar
           path: apiGateWay/target/*.jar
 
-  build-shop-service:
-    name: Build — shop-service
+  build-barber-service:
+    name: Build — barberService
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: shop-service
+        working-directory: barberService
     steps:
       - uses: actions/checkout@v4
 
@@ -87,15 +87,15 @@ jobs:
       - name: Upload jar
         uses: actions/upload-artifact@v4
         with:
-          name: shop-service-jar
-          path: shop-service/target/*.jar
+          name: barber-service-jar
+          path: barberService/target/*.jar
 
   build-appointment-service:
-    name: Build — appointment-service
+    name: Build — appoinmentservice
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: appoinment-service
+        working-directory: appoinmentservice
     steps:
       - uses: actions/checkout@v4
 
@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: appointment-service-jar
-          path: appoinment-service/target/*.jar
+          path: appoinmentservice/target/*.jar
 
   # ─────────────────────────────────────────────
   # JOB 2: Docker build + push (only on main)
@@ -124,7 +124,7 @@ jobs:
     needs:
       - build-discovery-server
       - build-api-gateway
-      - build-shop-service
+      - build-barber-service
       - build-appointment-service
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
@@ -138,10 +138,10 @@ jobs:
             context: discovery-server
           - name: api-gateway
             context: apiGateWay
-          - name: shop-service
-            context: shop-service
+          - name: barber-service
+            context: barberService
           - name: appointment-service
-            context: appoinment-service
+            context: appoinmentservice
 
     steps:
       - uses: actions/checkout@v4
@@ -197,7 +197,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [discovery-server, api-gateway, shop-service, appointment-service]
+        service: [discovery-server, api-gateway, barber-service, appointment-service]
 
     steps:
       - name: Log in to GitHub Container Registry
