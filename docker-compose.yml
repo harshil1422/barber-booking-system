@@ -74,3 +74,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      
+  barber-booking-ui:
+  build: ./barber-booking-ui
+  ports:
+    - "4200:80"
+  depends_on:
+    - gateway

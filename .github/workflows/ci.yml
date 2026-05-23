@@ -114,6 +114,28 @@ jobs:
         with:
           name: appointment-service-jar
           path: appoimentservice/target/*.jar
+  
+  build-frontend:
+    name: Build — barber-booking-ui
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: barber-booking-ui
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: barber-booking-ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build -- --configuration production   
 
   # ─────────────────────────────────────────────
   # JOB 2: Docker build + push (only on main)
@@ -126,6 +148,7 @@ jobs:
       - build-api-gateway
       - build-barber-service
       - build-appointment-service
+      - build-frontend
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: read
@@ -142,6 +165,8 @@ jobs:
             context: barberService
           - name: appointment-service
             context: appoimentservice
+          - name: barber-booking-ui        
+            context: barber-booking-ui  
 
     steps:
       - uses: actions/checkout@v4
@@ -197,7 +222,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [discovery-server, api-gateway, barber-service, appointment-service]
+        service: [discovery-server, api-gateway, barber-service, appointment-service, barber-booking-ui]
 
     steps:
       - name: Log in to GitHub Container Registry
@@ -220,3 +245,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-${{ matrix.service }}.sarif
+      
