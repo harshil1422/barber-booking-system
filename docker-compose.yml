@@ -1,27 +1,76 @@
-version: '3.8'
+
 
 services:
 
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   gateway:
-    build: ./api-gateway
+    build: ./apiGateway
     ports:
       - "9090:9090"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
     depends_on:
-      - shop-service
+      discovery-server:
+        condition: service_healthy
 
   shop-service:
-    build: ./shop-service
+    build: ./barberService
     ports:
       - "8089:8089"
     environment:
-      DB_URL: jdbc:mysql://shop-db:3306/shopdb
+      DB_URL: jdbc:mysql://shop-db:3306/barberBookingService?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       DB_USERNAME: root
       DB_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
     depends_on:
-      - shop-db
+      discovery-server:
+        condition: service_healthy
+      shop-db:
+        condition: service_healthy
+
+  appointment-service:
+    build: ./appoimentservice
+    ports:
+      - "8088:8088"
+    environment:
+      DB_URL: jdbc:mysql://appointment-db:3306/appoinment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: test
+      SLOT_SERVICE_URL: http://shop-service:8089
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+      appointment-db:
+        condition: service_healthy
 
   shop-db:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: shopdb
+      MYSQL_DATABASE: barberBookingService
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  appointment-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: appoinment_db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

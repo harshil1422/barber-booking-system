@@ -1,40 +1,222 @@
-name: barber booking service CI
+name: Barber Booking Service CI
+
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
-  
+    branches: [main, develop]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/barber-booking
+
 jobs:
-  build:
+
+  # ─────────────────────────────────────────────
+  # JOB 1: Build each Spring Boot service
+  # ─────────────────────────────────────────────
+  build-discovery-server:
+    name: Build — discovery-server
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: discovery-server
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: maven
 
-       #Discovery servr
-      - name: Build Discovery Server
-        run: |
-         cd discovery-server
-         mvn clean install -DskipTests 
-         docker build -t discovery-server
-         
+      - name: Build
+        run: mvn -B clean package -DskipTests
 
-      #API Gateway
-      - name: Build API Gateway
-        run: |
-         cd apiGateWay
-         mvn clean install -DskipTests
-         docker build -t api-gateWay
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovery-server-jar
+          path: discovery-server/target/*.jar
 
-      #Barber service    
-      - name: Build Barber service  
+  build-api-gateway:
+    name: Build — api-gateway
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apiGateWay
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build
+        run: mvn -B clean package -DskipTests
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-gateway-jar
+          path: apiGateWay/target/*.jar
+
+  build-shop-service:
+    name: Build — shop-service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: shop-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build
+        run: mvn -B clean package -DskipTests
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: shop-service-jar
+          path: shop-service/target/*.jar
+
+  build-appointment-service:
+    name: Build — appointment-service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: appoinment-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build
+        run: mvn -B clean package -DskipTests
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: appointment-service-jar
+          path: appoinment-service/target/*.jar
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Docker build + push (only on main)
+  # ─────────────────────────────────────────────
+  docker-build-push:
+    name: Docker — build & push images
+    runs-on: ubuntu-latest
+    needs:
+      - build-discovery-server
+      - build-api-gateway
+      - build-shop-service
+      - build-appointment-service
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        service:
+          - name: discovery-server
+            context: discovery-server
+          - name: api-gateway
+            context: apiGateWay
+          - name: shop-service
+            context: shop-service
+          - name: appointment-service
+            context: appoinment-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build jar for ${{ matrix.service.name }}
         run: |
-          cd barberService
-          mvn clean install -DskipTests
-          docker build -t barber-service .
-        
+          cd ${{ matrix.service.context }}
+          mvn -B clean package -DskipTests
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service.name }}
+          tags: |
+            type=sha,prefix=sha-
+            type=raw,value=latest
+
+      - name: Build & push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # ─────────────────────────────────────────────
+  # JOB 3: Image vulnerability scan
+  # ─────────────────────────────────────────────
+  scan-images:
+    name: Scan — Trivy vulnerability scan
+    runs-on: ubuntu-latest
+    needs: docker-build-push
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: read
+      security-events: write
+
+    strategy:
+      matrix:
+        service: [discovery-server, api-gateway, shop-service, appointment-service]
+
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service }}:latest
+          format: sarif
+          output: trivy-${{ matrix.service }}.sarif
+          severity: CRITICAL,HIGH
+          exit-code: '0'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-${{ matrix.service }}.sarif

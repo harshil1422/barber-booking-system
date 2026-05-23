@@ -1,11 +1,24 @@
 server:
-  port: 9091
+  port: 8761
 
 spring:
   application:
     name: discovery-server
 
 eureka:
+  instance:
+    hostname: localhost
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: false   # Don't register itself
+    fetch-registry: false         # Don't fetch registry from anywhere
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enable-self-preservation: false   # Set to true in production
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
