@@ -141,7 +141,7 @@ jobs:
           - name: barber-service
             context: barberService
           - name: appointment-service
-            context: appoinmentservice
+            context: appoimentservice
 
     steps:
       - uses: actions/checkout@v4
