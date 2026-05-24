@@ -1,0 +1,13 @@
+<h2>Available Slots</h2>
+
+<div class="slot-container">
+  <div 
+    class="slot-card"
+    *ngFor="let slot of slots"
+    [ngClass]="slot.status.toLowerCase()"
+    (click)="onSlotSelect(slot)"
+  >
+    <p>{{ slot.startTime }} - {{ slot.endTime }}</p>
+    <span>{{ slot.status }}</span>
+  </div>
+</div>

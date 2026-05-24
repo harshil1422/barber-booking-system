@@ -1,0 +1,17 @@
+.barber-container {
+  display: flex;
+  gap: 20px;
+}
+
+.barber-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  width: 220px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.barber-card img {
+  width: 100%;
+  border-radius: 6px;
+}

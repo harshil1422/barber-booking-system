@@ -1,0 +1,28 @@
+.slot-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.slot-card {
+  padding: 10px;
+  border-radius: 6px;
+  width: 120px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.available {
+  background-color: #d4f7d4;
+  cursor: pointer;
+}
+
+.booked {
+  background-color: #f5b7b1;
+  pointer-events: none;
+}
+
+.locked {
+  background-color: #f9e79f;
+  pointer-events: none;
+}

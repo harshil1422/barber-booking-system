@@ -1,0 +1,20 @@
+<form [formGroup]="shopForm" (ngSubmit)="submit()">
+
+  <input type="text" placeholder="Shop Name" formControlName="shopName" />
+  <input type="text" placeholder="Owner Name" formControlName="ownerName" />
+  <input type="email" placeholder="Email" formControlName="email" />
+  <input type="text" placeholder="Phone" formControlName="phoneNumber" />
+
+  <input type="text" placeholder="Address" formControlName="address" />
+  <input type="text" placeholder="City" formControlName="city" />
+  <input type="text" placeholder="State" formControlName="state" />
+  <input type="text" placeholder="Pincode" formControlName="pinCode" />
+
+  <textarea placeholder="Description" formControlName="description"></textarea>
+
+  <!-- File Upload -->
+  <input type="file" (change)="onFileSelect($event)" multiple />
+
+  <button type="submit">Register Shop</button>
+
+</form>

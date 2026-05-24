@@ -1,0 +1,14 @@
+<h2>Barber Shops</h2>
+
+<div class="barber-container">
+  <div class="barber-card" *ngFor="let barber of barbers">
+    <img [src]="barber.imageUrl" alt="Barber image" />
+    <h3>{{ barber.name }}</h3>
+    <p>{{ barber.location }}</p>
+    <p>⭐ {{ barber.rating }}</p>
+    <button [routerLink]="['/barbers', barber.id, 'slot']">
+        View Slots</button>
+  </div>
+</div>
+
+  
