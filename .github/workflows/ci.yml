@@ -156,32 +156,54 @@ jobs:
 
     strategy:
       matrix:
-        service:
+        include:
+          # Java services - need Maven build
           - name: discovery-server
             context: discovery-server
+            type: java
           - name: api-gateway
             context: apiGateWay
+            type: java
           - name: barber-service
             context: barberService
+            type: java
           - name: appointment-service
             context: appoimentservice
-          - name: barber-booking-ui        
-            context: barber-booking-ui  
+            type: java
+          # Angular - needs npm build
+          - name: barber-booking-ui
+            context: barber-booking-ui
+            type: node
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up JDK 17
+        if: matrix.type == 'java'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
 
-      - name: Build jar for ${{ matrix.service.name }}
+      - name: Build jar
+        if: matrix.type == 'java'
         run: |
           cd ${{ matrix.service.context }}
           mvn -B clean package -DskipTests
+
+      - name: Set up Node.js 18
+        if: matrix.type == 'node'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Build Angular
+        if: matrix.type == 'node'
+        run: |
+          cd ${{ matrix.context }}
+          npm ci
+          npm run build -- --configuration production
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -194,7 +216,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service.name }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.name }}
           tags: |
             type=sha,prefix=sha-
             type=raw,value=latest
@@ -202,11 +224,10 @@ jobs:
       - name: Build & push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ${{ matrix.service.context }}
+          context: ${{ matrix.context }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
   # ─────────────────────────────────────────────
   # JOB 3: Image vulnerability scan
   # ─────────────────────────────────────────────
