@@ -189,7 +189,7 @@ jobs:
       - name: Build jar
         if: matrix.type == 'java'
         run: |
-          cd ${{ matrix.service.context }}
+          cd ${{ matrix.context }}
           mvn -B clean package -DskipTests
 
       - name: Set up Node.js 18
