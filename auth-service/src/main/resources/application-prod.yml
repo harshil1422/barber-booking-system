@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      ssl: true
+
+  data:
+    redis:
+      ssl:
+        enabled: true
+
+server:
+  ssl:
+    enabled: true
+    key-store: ${SSL_KEYSTORE_PATH}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: PKCS12
+
+logging:
+  level:
+    com.yourapp.auth: WARN
+    root: ERROR

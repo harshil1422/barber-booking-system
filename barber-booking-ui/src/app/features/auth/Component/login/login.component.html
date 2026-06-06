@@ -1,0 +1,95 @@
+<div class="auth-container">
+    <mat-card class="auth-card">
+        
+        <!--Header  -->
+         <mat-card-header>
+            <mat-card-title class="auth-title">
+                <span class="brand">✂ Barber Booking</span>
+            </mat-card-title>
+            <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+        </mat-card-header>
+
+        <!--Content  -->
+        <mat-card-content>
+
+            <!-- Error banner -->
+                <div class="error-banner" *ngIf="error$ | async as error" role="alert">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>{{ error }}</span>
+                </div>
+
+            <!-- Success message after registration -->
+             <div class="success-banner"
+             *ngIf="route.snapshot.queryParams['registered']"
+             role="status">
+             <mat-icon>check_circle</mat-icon>
+             <span>Account created — you can now sign in.</span>
+            </div>
+
+            <form [formGroup]="form"(ngSubmit)="onSubmit()" novalidate>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username or email</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            autocomplete="username"
+            placeholder="johndoe"
+            [attr.aria-describedby]="username.errors ? 'username-error' : null">
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <mat-error id="username-error">
+            <ng-container *ngIf="username.errors as e">
+              <span *ngIf="e['required']">Username is required</span>
+              <span *ngIf="e['minlength']">At least 3 characters</span>
+            </ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            autocomplete="current-password"
+            [attr.aria-describedby]="password.errors ? 'password-error' : null">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button
+            mat-icon-button matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error id="password-error">
+            <ng-container *ngIf="password.errors as e">
+              <span *ngIf="e['required']">Password is required</span>
+              <span *ngIf="e['minlength']">At least 8 characters</span>
+            </ng-container>
+          </mat-error>
+        </mat-form-field>
+
+
+                <button
+                    mat-raised-button
+                    color="primary"
+                    type="submit"
+                    class="submit-btn"
+                    [disabled]="isLoading$ | async">
+                    <mat-spinner *ngIf="isLoading$ | async" diameter="20"></mat-spinner>
+                    <span *ngIf="!(isLoading$ | async)">Sign in</span>
+                </button> 
+                
+            </form>
+        </mat-card-content align="end">
+        <span class="register-link">
+            New Here? 
+            <a routerLink="/auth/register" mat-button-color="primary">
+                Create an account
+            </a>
+        </span>
+        <mat-card-actions>
+
+        </mat-card-actions>
+    </mat-card>
+</div>

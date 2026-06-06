@@ -1,0 +1,25 @@
+app:
+  jwt:
+    secret: dGVzdC1zZWNyZXQta2V5LWZvci1kZXZlbG9wbWVudC1vbmx5LW5vdC1mb3ItcHJvZA==
+    issuer: your-app-dev
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authdb_dev
+    username: authuser
+    password: devpassword
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  level:
+    com.yourapp.auth: DEBUG
+    org.springframework.security: DEBUG

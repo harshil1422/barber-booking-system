@@ -7,8 +7,12 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
-        }
+           "style": "scss",
+           "changeDetection": "OnPush",
+           "standalone": true
+        },
+         "@schematics/angular:directive": { "standalone": true },
+         "@schematics/angular:pipe":      { "standalone": true }
       },
       "root": "",
       "sourceRoot": "src",
@@ -71,7 +75,10 @@
               "buildTarget": "barber-booking-ui:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "src/proxy.config.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"

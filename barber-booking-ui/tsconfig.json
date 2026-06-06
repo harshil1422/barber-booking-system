@@ -14,6 +14,14 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+     "paths": {
+      "@core/*": ["./src/app/core/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@store/*": ["./src/app/store/*"],
+      "@features/*": ["./src/app/features/*"],
+      "@layout/*": ["./src/app/layout/*"],
+      "@env/*": ["./src/environments/*"]
+    },
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022"
