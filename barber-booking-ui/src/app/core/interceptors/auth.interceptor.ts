@@ -85,7 +85,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const storage = inject(TokenStorageService);
   const authSvc = inject(AuthService);
   const store   = inject(Store);
-  const token   = storage.get();
+  const token   = storage.getToken();
   const authReq = token ? addBearer(req, token) : req;
 
   return next(authReq).pipe(

@@ -1,8 +1,13 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "http://localhost:9090",  // point to your API Gateway port
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "info"
+    "logLevel": "debug",
+
+   
+    "headers": {
+      "Origin": "http://localhost:9090"
+    }
   }
 }

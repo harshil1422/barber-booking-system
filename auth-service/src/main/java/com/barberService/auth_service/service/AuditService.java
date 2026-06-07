@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.UUID;
@@ -34,11 +36,16 @@ public class AuditService {
                     .userAgent(request.getHeader("User-Agent"))
                     .meta(meta)
                     .build();
-            auditLogRepository.save(entry);
+            saveAuditLog(entry);
         } catch (Exception e) {
             // Audit failure must never break the main flow
             log.warn("Failed to write audit log for action={} userId={}: {}", action, userId, e.getMessage());
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveAuditLog(AuditLog entry){
+        auditLogRepository.save(entry);
     }
 
     /** Resolve real client IP — handles reverse proxy X-Forwarded-For header. */

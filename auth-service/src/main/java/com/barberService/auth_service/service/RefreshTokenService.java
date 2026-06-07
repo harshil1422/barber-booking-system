@@ -7,6 +7,7 @@ import com.barberService.auth_service.model.RefreshToken;
 import com.barberService.auth_service.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
@@ -28,6 +29,7 @@ public class RefreshTokenService {
      * Creates a new refresh token for the given user.
      * Only the SHA-256 hash is stored — raw token returned to caller once.
      */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String createRefreshToken(UUID userId, String userAgent, String ipAddress) {
         // Two UUIDs concatenated = 73 chars of entropy
         String rawToken = UUID.randomUUID() + "-" + UUID.randomUUID();
@@ -41,8 +43,12 @@ public class RefreshTokenService {
                 .ipAddress(ipAddress)
                 .build();
 
-        refreshTokenRepository.save(token);
+        saveToken(token);
         return rawToken;
+    }
+
+    private  void  saveToken(RefreshToken token){
+        refreshTokenRepository.save(token);
     }
 
     /**

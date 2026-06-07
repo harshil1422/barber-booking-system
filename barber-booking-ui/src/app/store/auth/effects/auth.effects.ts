@@ -147,4 +147,16 @@ export class AuthEffects {
       ),
     ),
   );
+
+  checkAuthFailureRedirect$ = createEffect(
+  () =>
+    this.#actions$.pipe(
+      ofType(AuthActions.checkAuthFailure),
+      tap(() => {
+        this.#router.navigate(['/auth/login']);
+      })
+    ),
+  { dispatch: false }
+);
+  
 }

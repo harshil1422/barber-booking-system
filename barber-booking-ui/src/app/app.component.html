@@ -1,2 +1,52 @@
 
-<router-outlet></router-outlet>
+<!-- Global loading bar — signal-based, always visible at top -->
+<app-loading-bar />
+
+<!-- Gate entire app on initialized signal.
+     During APP_INITIALIZER (steps 2-4 in the flow above) this is false
+     so the spinner shows instead of the wrong page flashing briefly. -->
+@if (initialized()) {
+
+  <!-- Toolbar — only rendered when user is authenticated -->
+  @if (initialized() && isAuthenticated()) {
+    <mat-toolbar color="primary" class="app-toolbar">
+
+      <span class="brand">✂ Barber Booking</span>
+      <span class="spacer"></span>
+
+      <!-- @if with alias — currentUser() called once, used as 'user' -->
+      @if (currentUser(); as user) {
+        <span class="username">{{ user.username }}</span>
+
+        <button mat-icon-button [matMenuTriggerFor]="userMenu"
+                aria-label="User menu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <mat-divider />
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Sign out</span>
+          </button>
+        </mat-menu>
+      }
+
+    </mat-toolbar>
+  }
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+
+} @else {
+  <!-- Shown during APP_INITIALIZER session check -->
+  <div class="init-spinner">
+    <mat-spinner diameter="48" />
+  </div>
+}
+

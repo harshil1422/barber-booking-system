@@ -1,14 +1,15 @@
 import { LoginComponent } from "./Component/login/login.component";
 import { RegisterComponent } from "./Component/register/register.component";
-import { NoAuthGuard } from "./guards/no-auth.guard";
+import { noAuthGuard } from "@core/guards/no-auth.guard";
+import {Routes} from '@angular/router' ;
 
 
 
 
-export const AUTH_ROUTES = [
+export const AUTH_ROUTES: Routes = [
  {
     path: '',
-    canActivate: [NoAuthGuard],
+    canActivate: [noAuthGuard],
     children: [
       { path: 'login',    component: LoginComponent },
       { path: 'register', component: RegisterComponent },

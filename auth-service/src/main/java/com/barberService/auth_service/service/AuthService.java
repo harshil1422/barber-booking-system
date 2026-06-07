@@ -28,7 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuditService auditService;
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public TokenResponse login(AuthDtos.LoginRequest req, HttpServletRequest httpReq) {
         User user = userRepository
                 .findByUsernameOrEmail(req.username(), req.username())

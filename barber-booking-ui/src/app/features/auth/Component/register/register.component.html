@@ -1,1 +1,112 @@
-<p>register works!</p>
+<div class="auth-container">
+  <mat-card class="auth-card">
+
+    <mat-card-header>
+      <mat-card-title>
+        <span class="brand">✂ Barber Booking</span>
+      </mat-card-title>
+      <mat-card-subtitle>Create your account</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      @if (error()) {
+        <div class="error-banner" role="alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username"
+                 autocomplete="username" placeholder="johndoe">
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <mat-error>
+            @if (username.errors?.['required'])  { Username is required }
+            @if (username.errors?.['minlength']) { At least 3 characters }
+            @if (username.errors?.['maxlength']) { Max 50 characters }
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email"
+                 type="email" autocomplete="email" placeholder="john@example.com">
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error>
+            @if (email.errors?.['required']) { Email is required }
+            @if (email.errors?.['email'])    { Enter a valid email address }
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password"
+                 [type]="hidePassword ? 'password' : 'text'"
+                 autocomplete="new-password">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button mat-icon-button matSuffix type="button"
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="hidePassword ? 'Show' : 'Hide'">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error>
+            @if (password.errors?.['required'])        { Password is required }
+            @if (password.errors?.['minlength'])       { At least 8 characters }
+            @if (password.errors?.['missingUppercase']){ Add an uppercase letter }
+            @if (password.errors?.['missingNumber'])   { Add a number }
+            @if (password.errors?.['missingSpecial'])  { Add a special character (!&#64;#$%) }
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password strength meter -->
+        @if (password.value) {
+          <div class="strength-meter">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="strengthScore() * 20"
+              [color]="strengthColor()">
+            </mat-progress-bar>
+            <span class="strength-label">{{ strengthLabel() }}</span>
+          </div>
+        }
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <input matInput formControlName="confirmPassword"
+                 [type]="hideConfirmPassword ? 'password' : 'text'"
+                 autocomplete="new-password">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button mat-icon-button matSuffix type="button"
+                  (click)="hideConfirmPassword = !hideConfirmPassword">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.errors?.['passwordMismatch'] && confirmPassword.touched) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit"
+                class="submit-btn" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Create account
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <span class="login-link">
+        Already have an account?
+        <a routerLink="/auth/login" mat-button color="primary">Sign in</a>
+      </span>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

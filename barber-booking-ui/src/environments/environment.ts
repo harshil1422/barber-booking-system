@@ -3,5 +3,9 @@ export const environment = {
   apiUrl: '/api',
   appName: 'Barber Booking',
   tokenKey: 'bb_access_token',
-  refreshInterval: 60000,   // check token expiry every 60s
+  refreshInterval: 60000,
+
 };
+
+// Base URL comes from environment — '/api' in dev (proxied), real URL in prod
+      //  readonly #base = `${environment.apiUrl}/v1/auth`;

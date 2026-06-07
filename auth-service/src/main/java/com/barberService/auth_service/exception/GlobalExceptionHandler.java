@@ -59,6 +59,7 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, message, req);
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex, HttpServletRequest req) {
