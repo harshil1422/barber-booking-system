@@ -37,5 +37,6 @@ export const AuthActions = createActionGroup({
 
     // ── Misc ───────────────────────────────────────────────────────────
     'Clear Error': emptyProps(),
+    'Switch Role': props<{ role: 'USER' | 'BARBER' }>()
   },
 });

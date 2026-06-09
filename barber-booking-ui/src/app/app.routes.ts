@@ -11,6 +11,11 @@ export const APP_ROUTES: Routes = [
       import('./features/auth/auth.routes')
         .then(r => r.AUTH_ROUTES),
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./features/user-dashboard/user-dashboard.routes')
+    .then(d=> d.USER_DASHBOARD_ROUTES)
+  }
 
       // {path:'', redirectTo:'barbers',pathMatch :'full'},
       // {path:'barbers',component:ShopRegisterComponent},

@@ -42,4 +42,10 @@ export const AuthSelectors = {
   selectIsUser: createSelector(
     selectAuthState, s => s.user?.roles.includes('ROLE_USER') ?? false,
   ),
+  selectIsBarber: createSelector(
+    selectAuthState, s=> s.user?.roles.includes('ROLE_BARBER') ?? false,
+  ),
+  selectActiveRole: createSelector(
+    selectAuthState, s => s.activeRole
+  )
 };

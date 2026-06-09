@@ -65,4 +65,7 @@ export const authReducer = createReducer(
   // ── Misc ───────────────────────────────────────────────────────────
   on(AuthActions.clearError,
     s => ({ ...s, error: null })),
+  
+  on(AuthActions.switchRole,
+    (s,{ role }) =>({ ...s, activeRole: role}))
 );

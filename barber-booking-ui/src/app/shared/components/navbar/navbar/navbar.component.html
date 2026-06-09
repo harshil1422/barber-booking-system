@@ -1,0 +1,43 @@
+<mat-toolbar class="nl-navbar">
+      <!-- Logo -->
+      <a routerLink="/dashboard" class="nl-logo">
+        <span class="nl-logo-icon">✂</span>
+        New<span class="nl-logo-gold">Look</span>
+      </a>
+ 
+      <!-- Nav tabs -->
+      <nav class="nl-nav-tabs">
+        @if ((activeRole$ | async) === 'USER') {
+          <button mat-button routerLink="/dashboard"      routerLinkActive="nl-tab-active">Dashboard</button>
+          <button mat-button routerLink="/dashboard/discover"   routerLinkActive="nl-tab-active">Discover</button>
+          <button mat-button routerLink="/dashboard/bookings"   routerLinkActive="nl-tab-active">My Bookings</button>
+          <button mat-button routerLink="/dashboard/reviews"    routerLinkActive="nl-tab-active">Reviews</button>
+        } @else {
+          <button mat-button routerLink="/barber"          routerLinkActive="nl-tab-active">Dashboard</button>
+          <button mat-button routerLink="/barber/schedule" routerLinkActive="nl-tab-active">Schedule</button>
+          <button mat-button routerLink="/barber/chairs"   routerLinkActive="nl-tab-active">Chairs</button>
+          <button mat-button routerLink="/barber/earnings" routerLinkActive="nl-tab-active">Earnings</button>
+        }
+      </nav>
+ 
+      <span class="nl-spacer"></span>
+ 
+      <!-- Role pill -->
+      <span class="nl-role-pill" [class.barber]="(activeRole$ | async) === 'BARBER'">
+        {{ (activeRole$ | async) === 'BARBER' ? 'Barber' : 'User' }}
+      </span>
+ 
+      <!-- Avatar menu -->
+      <button mat-icon-button [matMenuTriggerFor]="avatarMenu" class="nl-avatar">
+        {{ (user$ | async)?.initials ?? 'U' }}
+      </button>
+      <mat-menu #avatarMenu="matMenu">
+        @if (isBarber$ | async) {
+          <button mat-menu-item (click)="switchToRole('BARBER')">Switch to Barber View</button>
+          <button mat-menu-item (click)="switchToRole('USER')">Switch to User View</button>
+          <mat-divider></mat-divider>
+        }
+        <button mat-menu-item routerLink="/register-shop">Register Shop</button>
+        <button mat-menu-item (click)="onLogout()">Sign Out</button>
+      </mat-menu>
+    </mat-toolbar>

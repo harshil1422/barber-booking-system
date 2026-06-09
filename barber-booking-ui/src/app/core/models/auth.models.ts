@@ -47,6 +47,7 @@ export interface AuthUser {
 export interface AuthState {
   user:        AuthUser | null;
   accessToken: string   | null;
+  activeRole: string | null;
   loading:     boolean;
   error:       string   | null;
   initialized: boolean;
@@ -55,6 +56,7 @@ export interface AuthState {
 export const initialAuthState: AuthState = {
   user:        null,
   accessToken: null,
+  activeRole: null,
   loading:     false,
   error:       null,
   initialized: false,
@@ -68,4 +70,5 @@ export enum UserRole {
   User      = 'ROLE_USER',
   Admin     = 'ROLE_ADMIN',
   Moderator = 'ROLE_MODERATOR',
+  Barber    = 'ROLE_BARBER'
 }
