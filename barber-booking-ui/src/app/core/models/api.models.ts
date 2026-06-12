@@ -22,3 +22,23 @@ export interface PageResponse<T> {
   first:         boolean;
   last:          boolean;
 }
+
+// ── NOTIFICATION ─────────────────────────────────────────────
+export type NotificationType =
+  | 'BOOKING_CONFIRMED'
+  | 'BOOKING_CANCELLED'
+  | 'APPOINTMENT_REMINDER'
+  | 'REVIEW_RECEIVED'
+  | 'PAYMENT_CAPTURED'
+  | 'REFUND_PROCESSED'
+  | 'SHOP_VERIFIED';
+
+export interface AppNotification {
+  id:        string;
+  type:      NotificationType;
+  title:     string;
+  message:   string;
+  read:      boolean;
+  createdAt: string;
+  actionUrl?: string;
+}

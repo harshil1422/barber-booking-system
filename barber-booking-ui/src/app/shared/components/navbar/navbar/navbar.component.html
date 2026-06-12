@@ -2,12 +2,13 @@
       <!-- Logo -->
       <a routerLink="/dashboard" class="nl-logo">
         <span class="nl-logo-icon">✂</span>
-        New<span class="nl-logo-gold">Look</span>
+         New
+        <span class="nl-logo-gold">Look</span>
       </a>
  
       <!-- Nav tabs -->
       <nav class="nl-nav-tabs">
-        @if ((activeRole$ | async) === 'USER') {
+        @if (activeRole() === 'USER') {
           <button mat-button routerLink="/dashboard"      routerLinkActive="nl-tab-active">Dashboard</button>
           <button mat-button routerLink="/dashboard/discover"   routerLinkActive="nl-tab-active">Discover</button>
           <button mat-button routerLink="/dashboard/bookings"   routerLinkActive="nl-tab-active">My Bookings</button>
@@ -23,16 +24,16 @@
       <span class="nl-spacer"></span>
  
       <!-- Role pill -->
-      <span class="nl-role-pill" [class.barber]="(activeRole$ | async) === 'BARBER'">
-        {{ (activeRole$ | async) === 'BARBER' ? 'Barber' : 'User' }}
+      <span class="nl-role-pill" [class.barber]="(activeRole()) === 'BARBER'">
+        {{ activeRole() === 'BARBER' ? 'Barber' : 'User' }}
       </span>
  
       <!-- Avatar menu -->
       <button mat-icon-button [matMenuTriggerFor]="avatarMenu" class="nl-avatar">
-        {{ (user$ | async)?.initials ?? 'U' }}
+        {{initials()}}
       </button>
       <mat-menu #avatarMenu="matMenu">
-        @if (isBarber$ | async) {
+        @if (isBarber()) {
           <button mat-menu-item (click)="switchToRole('BARBER')">Switch to Barber View</button>
           <button mat-menu-item (click)="switchToRole('USER')">Switch to User View</button>
           <mat-divider></mat-divider>

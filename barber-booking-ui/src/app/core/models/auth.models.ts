@@ -37,14 +37,15 @@ export interface AuthUser {
   userId:   string;
   username: string;
   roles:    string[];
-  exp:      number;  // kept so components can show session expiry if needed
+  exp:      number; 
+  phone:    string|null;  // kept so components can show session expiry if needed
 }
 
 // ── NgRx feature state ────────────────────────────────────────────────────
 // This is exactly what sits in the Redux store under the 'auth' key.
 // initialized = true after APP_INITIALIZER checkAuth attempt completes.
 
-export interface AuthState {
+export interface    AuthState {
   user:        AuthUser | null;
   accessToken: string   | null;
   activeRole: string | null;
@@ -52,6 +53,28 @@ export interface AuthState {
   error:       string   | null;
   initialized: boolean;
 }
+export interface AuthResponse {
+  accessToken:  string;
+  refreshToken: string;
+  tokenType:    'Bearer';
+  expiresIn:    number;
+  user:         UserProfile;
+}
+
+// ── USER ─────────────────────────────────────────────────────
+export type UserRole = 'USER' | 'BARBER' | 'ADMIN';
+
+export interface UserProfile {
+  id:          string;
+  name:        string;
+  phone:       string;
+  email?:      string;
+  avatarUrl?:  string;
+  roles:       UserRole[];
+  shopId?:     string;      // set when user has registered a shop
+  createdAt:   string;
+}
+
 
 export const initialAuthState: AuthState = {
   user:        null,
@@ -66,9 +89,3 @@ export const initialAuthState: AuthState = {
 // Must match Spring Boot UserRole enum values exactly.
 // Use these in route guards: data: { roles: [UserRole.Admin] }
 
-export enum UserRole {
-  User      = 'ROLE_USER',
-  Admin     = 'ROLE_ADMIN',
-  Moderator = 'ROLE_MODERATOR',
-  Barber    = 'ROLE_BARBER'
-}

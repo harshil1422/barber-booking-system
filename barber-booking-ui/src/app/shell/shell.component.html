@@ -1,0 +1,160 @@
+<!-- src/app/shell/shell.component.html -->
+<mat-toolbar color="primary" class="nl-toolbar">
+
+  <!-- Hamburger -->
+  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle navigation">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Brand -->
+  <a class="nl-brand" routerLink="/dashboard">
+    <div class="nl-brand-icon">✂</div>
+    <span class="nl-brand-name">New<span>Look</span></span>
+  </a>
+
+  <span class="nl-toolbar-spacer"></span>
+
+  <!-- Search -->
+  <mat-form-field class="nl-search" appearance="outline" subscriptSizing="dynamic">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Search shops, services…" aria-label="Search" />
+  </mat-form-field>
+
+  <!-- Notifications -->
+  <button mat-icon-button
+          [matBadge]="unreadCount() || null"
+          matBadgeColor="warn"
+          matBadgeSize="small"
+          matTooltip="Notifications"
+          [matMenuTriggerFor]="notifMenu"
+          aria-label="Open notifications">
+    <mat-icon>notifications_none</mat-icon>
+  </button>
+
+  <!-- Notification dropdown -->
+  <mat-menu #notifMenu="matMenu" class="nl-notif-menu">
+    <div class="nl-notif-header" (click)="$event.stopPropagation()">
+      <span>Notifications</span>
+      <button mat-button color="primary" (click)="notifService.markAllAsRead()">
+        Mark all read
+      </button>
+    </div>
+    <mat-divider />
+    <div class="nl-notif-empty" *ngIf="notifService.notifications().length === 0">
+      No new notifications
+    </div>
+  </mat-menu>
+
+  <!-- Role Toggle -->
+  <mat-button-toggle-group
+    [value]="activeRole()"
+    (change)="switchRole($event.value)"
+    aria-label="Switch view mode"
+    class="nl-role-toggle">
+    <mat-button-toggle value="USER">
+      <mat-icon>person</mat-icon> User
+    </mat-button-toggle>
+    <mat-button-toggle value="BARBER" [disabled]="!isBarber()">
+      <mat-icon>content_cut</mat-icon> Barber
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!-- Avatar / Account menu -->
+  <button class="nl-avatar" [matMenuTriggerFor]="accountMenu" aria-label="Account menu">
+    {{ initials() }}
+  </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <div class="nl-account-header" (click)="$event.stopPropagation()">
+      <strong>{{ user()?.username }}</strong>
+      <span>{{ user()?.phone }}</span>
+    </div>
+    <mat-divider />
+    <button mat-menu-item routerLink="/dashboard">
+      <mat-icon>person</mat-icon> My Profile
+    </button>
+    <button mat-menu-item routerLink="/my-bookings">
+      <mat-icon>calendar_today</mat-icon> My Bookings
+    </button>
+    <mat-divider />
+    <button mat-menu-item (click)="logout()" class="nl-logout">
+      <mat-icon>logout</mat-icon> Sign Out
+    </button>
+  </mat-menu>
+
+</mat-toolbar>
+
+<!-- MAT-SIDENAV-CONTAINER -->
+<mat-sidenav-container class="nl-sidenav-container">
+
+  <!-- SIDENAV -->
+  <mat-sidenav
+    #sidenav
+    [opened]="sidenavOpen()"
+    mode="side"
+    class="nl-sidenav">
+
+    <mat-nav-list>
+
+      <!-- General -->
+      <div class="nl-nav-section-label">General</div>
+      @for (item of userNavItems; track item.route) {
+        <a mat-list-item
+           [routerLink]="item.route"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+           class="nl-nav-item"
+           [attr.aria-label]="item.label">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nl-nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+
+      <!-- Explore -->
+      <mat-divider class="nl-nav-divider" />
+      <div class="nl-nav-section-label">Explore</div>
+      @for (item of exploreNavItems; track item.route) {
+        <a mat-list-item
+           [routerLink]="item.route"
+           routerLinkActive="active"
+           class="nl-nav-item">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nl-nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+
+      <!-- Account -->
+      <mat-divider class="nl-nav-divider" />
+      <div class="nl-nav-section-label">Account</div>
+      @for (item of accountNavItems; track item.route) {
+        <a mat-list-item [routerLink]="item.route" class="nl-nav-item">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+
+    </mat-nav-list>
+
+    <!-- Sidenav footer -->
+    <div class="nl-sidenav-footer">
+      <mat-divider />
+      <button mat-list-item class="nl-nav-item nl-logout-item" (click)="logout()">
+        <mat-icon matListItemIcon>logout</mat-icon>
+        <span matListItemTitle>Sign Out</span>
+      </button>
+    </div>
+
+  </mat-sidenav>
+
+  <!-- MAIN CONTENT -->
+  <mat-sidenav-content class="nl-content">
+    <router-outlet />
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

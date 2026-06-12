@@ -1,5 +1,6 @@
 // src/app/shell/shell.component.scss
 // @use '../styles/theme' as theme;
+@use'../../styles/theme' as theme;
 
 // ── Toolbar ──────────────────────────────────────────────────
 .nl-toolbar {
@@ -13,7 +14,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-} 
+}
 
 .nl-brand {
   display: flex;

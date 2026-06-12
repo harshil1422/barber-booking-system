@@ -87,18 +87,15 @@ export class AuthEffects {
   // ── Logout ─────────────────────────────────────────────────────────────
   // ALWAYS dispatches logoutSuccess — even if the server returns 500.
   // Never leave a user stuck in a logged-in state due to a server error.
-  logout$ = createEffect(() =>
+ logout$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(AuthActions.logout),
-      exhaustMap(() =>
-        this.#auth.logout().pipe(
-          map(() => AuthActions.logoutSuccess()),
-          catchError(() => of(AuthActions.logoutSuccess())),
-        ),
-      ),
+      tap(() => {
+        this.#auth.logout();
+      })
     ),
+    { dispatch: false }
   );
-
   // ── Logout success: navigate to login ──────────────────────────────────
   // Also fires when AuthInterceptor dispatches logoutSuccess() after
   // a failed token refresh — ensures user always lands on login page.
@@ -118,8 +115,8 @@ export class AuthEffects {
       ofType(AuthActions.refreshToken),
       exhaustMap(() =>
         this.#auth.refreshToken().pipe(
-          map(res => AuthActions.refreshTokenSuccess({
-            token: res.accessToken,
+          map(accessToken => AuthActions.refreshTokenSuccess({
+            token: accessToken,
             user:  this.#storage.toAuthUser()!,
           })),
           catchError(() => of(AuthActions.refreshTokenFailure())),
@@ -138,8 +135,8 @@ export class AuthEffects {
       ofType(AuthActions.checkAuth),
       exhaustMap(() =>
         this.#auth.refreshToken().pipe(
-          map(res => AuthActions.checkAuthSuccess({
-            token: res.accessToken,
+          map(accessToken => AuthActions.checkAuthSuccess({
+            token: accessToken,
             user:  this.#storage.toAuthUser()!,
           })),
           catchError(() => of(AuthActions.checkAuthFailure())),

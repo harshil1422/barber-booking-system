@@ -1,0 +1,285 @@
+// src/styles/theme.scss
+// ─────────────────────────────────────────────────────────────
+// New Look — Angular Material Custom Theme
+// @use '@angular/material' as mat (Angular Material 19 API)
+// ─────────────────────────────────────────────────────────────
+@use '@angular/material' as mat;
+
+// ── Custom color palette: Gold ────────────────────────────────
+$nl-gold-palette: (
+  50:  #FBF4E3,
+  100: #F5E4BB,
+  200: #EED48F,
+  300: #E6C462,
+  400: #DFB641,
+  500: #C9A84C,   // Primary
+  600: #B8962A,
+  700: #9A7B1F,
+  800: #7D6216,
+  900: #60490F,
+  contrast: (
+    50:  rgba(0,0,0,0.87),
+    500: rgba(0,0,0,0.87),
+    900: white
+  )
+);
+
+$nl-dark-palette: (
+  50:  #E8E8E8,
+  100: #C5C5C5,
+  200: #9E9E9E,
+  300: #777777,
+  400: #595959,
+  500: #0D0D0D,   // Primary dark
+  600: #0B0B0B,
+  700: #080808,
+  800: #060606,
+  900: #030303,
+  contrast: (
+    50:  rgba(0,0,0,0.87),
+    500: white,
+    900: white
+  )
+);
+
+// ── Define theme ──────────────────────────────────────────────
+$nl-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary:    mat.$azure-palette,    // replaced with custom in vars
+    tertiary:   mat.$violet-palette
+  ),
+  typography: (
+    brand-family:   'Syne, sans-serif',
+    plain-family:   'Plus Jakarta Sans, sans-serif',
+    bold-weight:    700,
+    medium-weight:  500,
+    regular-weight: 400
+  ),
+  density: (scale: 0)
+));
+
+// ── Apply theme ───────────────────────────────────────────────
+html {
+  @include mat.all-component-themes($nl-theme);
+}
+
+// ─────────────────────────────────────────────────────────────
+// src/styles/global.scss — CSS custom properties + global rules
+// ─────────────────────────────────────────────────────────────
+:root {
+  // Brand colours
+  --nl-gold:        #C9A84C;
+  --nl-gold-light:  #E8C96A;
+  --nl-gold-dim:    #8a6f2e;
+  --nl-gold-bg:     #FBF4E3;
+  --nl-ink:         #0D0D0D;
+  --nl-surface:     #F5F3EE;
+  --nl-card:        #FFFFFF;
+
+  // Semantic
+  --nl-success:     #1B7F5E;
+  --nl-success-bg:  #E6F4EF;
+  --nl-warn:        #B45309;
+  --nl-warn-bg:     #FEF3C7;
+  --nl-error:       #B91C1C;
+  --nl-error-bg:    #FEE2E2;
+  --nl-info:        #1D4ED8;
+  --nl-info-bg:     #EFF6FF;
+  --nl-purple:      #6D28D9;
+  --nl-purple-bg:   #EDE9FE;
+
+  // Text
+  --nl-text-primary:   #0D0D0D;
+  --nl-text-secondary: #5C5752;
+  --nl-text-disabled:  #A8A29E;
+
+  // Borders
+  --nl-border:    rgba(0,0,0,0.09);
+  --nl-border-md: rgba(0,0,0,0.14);
+
+  // Shadows
+  --nl-shadow-1: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1);
+  --nl-shadow-2: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.08);
+  --nl-shadow-3: 0 10px 15px rgba(0,0,0,0.07), 0 4px 6px rgba(0,0,0,0.05);
+}
+
+// ── Base reset ────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--nl-surface);
+  color: var(--nl-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Material overrides ────────────────────────────────────────
+.mat-mdc-card {
+  border-radius: 12px !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+// Snackbar error class applied by error interceptor
+.nl-snack-error {
+  --mdc-snackbar-container-color: var(--nl-error);
+  --mat-snack-bar-button-color: #fff;
+}
+
+// Panel shared styles — used by all dashboard cards
+.nl-panel {
+  border: 1px solid var(--nl-border) !important;
+  background: var(--nl-card) !important;
+
+  .nl-panel-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px !important;
+    border-bottom: 1px solid var(--nl-border);
+
+    mat-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+
+      mat-icon { font-size: 18px; color: var(--nl-gold-dim); }
+    }
+  }
+
+  .nl-panel-action {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--nl-gold-dim) !important;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    &:hover { color: var(--nl-gold) !important; }
+    mat-icon { font-size: 14px; height: 14px; width: 14px; }
+  }
+
+  .nl-panel-body {
+    padding: 16px 18px !important;
+
+    &.no-pad { padding: 0 !important; }
+  }
+}
+
+// ── Slot button classes ───────────────────────────────────────
+.nl-slot-btn {
+  font-size: 11.5px !important;
+  padding: 0 12px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  min-width: unset !important;
+
+  &.available {
+    border-color: var(--nl-success) !important;
+    color: var(--nl-success) !important;
+    background: var(--nl-success-bg) !important;
+  }
+  &.booked {
+    background: var(--nl-ink) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+  }
+  &.busy {
+    color: var(--nl-text-disabled) !important;
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+  &.walkin {
+    border-color: rgba(109,40,217,0.3) !important;
+    color: var(--nl-purple) !important;
+    background: var(--nl-purple-bg) !important;
+    font-size: 10.5px !important;
+  }
+}
+
+// ── Chair status tiles ────────────────────────────────────────
+.nl-chair-tile {
+  flex: 1;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--nl-border);
+  cursor: default;
+
+  mat-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+  .nl-chair-num    { font-size: 11px; font-weight: 600; }
+  .nl-chair-status { font-size: 10px; color: var(--nl-text-secondary); }
+
+  &.occupied {
+    border-color: rgba(185,28,28,0.25);
+    background: var(--nl-error-bg);
+    mat-icon, .nl-chair-status { color: var(--nl-error); }
+  }
+  &.free {
+    border-color: rgba(27,127,94,0.25);
+    background: var(--nl-success-bg);
+    mat-icon, .nl-chair-status { color: var(--nl-success); }
+  }
+  &.walkin {
+    border-color: rgba(109,40,217,0.25);
+    background: var(--nl-purple-bg);
+    mat-icon, .nl-chair-status { color: var(--nl-purple); }
+  }
+}
+
+// ── Timeline styles ───────────────────────────────────────────
+.nl-timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--nl-border);
+  transition: background 0.12s;
+  cursor: pointer;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(0,0,0,0.02); }
+  &.nl-timeline-you { background: var(--nl-gold-bg); }
+}
+
+.nl-timeline-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.confirmed { background: var(--nl-success); box-shadow: 0 0 0 3px var(--nl-success-bg); }
+  &.pending   { background: var(--nl-gold);    box-shadow: 0 0 0 3px var(--nl-gold-bg); }
+  &.done      { background: var(--nl-text-disabled); }
+}
+
+.nl-timeline-time {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--nl-gold-dim);
+  min-width: 48px;
+}
+
+.nl-timeline-info { flex: 1; min-width: 0; }
+.nl-timeline-name { font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.nl-timeline-service { font-size: 11.5px; color: var(--nl-text-secondary); }
+.nl-timeline-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.nl-paid-chip  { background: var(--nl-success-bg) !important; color: var(--nl-success) !important; font-size: 10px !important; }
+.nl-chair-chip { background: var(--nl-surface)    !important; color: var(--nl-text-secondary) !important; font-size: 10px !important; }
+.nl-you-chip   { background: var(--nl-gold-bg)    !important; color: var(--nl-gold-dim) !important; font-size: 10px !important; }

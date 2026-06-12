@@ -54,11 +54,10 @@ function handle401(
     refreshSubject.next(null);  // signal: refresh in-flight
 
     return authSvc.refreshToken().pipe(
-      switchMap(({ accessToken }) => {
-        isRefreshing = false;
-        refreshSubject.next(accessToken);  // unblocks the queue
-        return next(addBearer(req, accessToken));
-      }),
+      switchMap((accessToken: string) => {
+  refreshSubject.next(accessToken);
+  return next(addBearer(req, accessToken));
+}),
       catchError(err => {
         isRefreshing = false;
         // Refresh failed — clear state and navigate to login via logoutSuccess

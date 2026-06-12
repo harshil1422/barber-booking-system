@@ -53,6 +53,7 @@ export class TokenStorageService {
       username: p.sub,     // JWT 'sub' → AuthUser 'username'
       roles:    p.roles ?? [],
       exp:      p.exp,
+      phone:    "1234567890" // Placeholder, as phone is not in JWT but may be needed in UI
     };
   }
 

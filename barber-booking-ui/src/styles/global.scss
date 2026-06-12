@@ -1,0 +1,56 @@
+// src/styles/global.scss
+// All global rules are already embedded in theme.scss
+// This file handles additional utility classes and animations
+
+// ── Fonts ─────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
+
+// ── Page enter animation ──────────────────────────────────────
+@keyframes nl-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nl-animate-in {
+  animation: nl-fade-up 0.3s ease both;
+}
+
+// ── Loading shimmer ───────────────────────────────────────────
+@keyframes nl-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.nl-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--nl-surface) 25%,
+    #e8e5de 50%,
+    var(--nl-surface) 75%
+  );
+  background-size: 800px 100%;
+  animation: nl-shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--nl-border-md); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--nl-text-disabled); }
+
+// ── Utility ───────────────────────────────────────────────────
+.nl-text-gold    { color: var(--nl-gold); }
+.nl-text-muted   { color: var(--nl-text-secondary); }
+.nl-text-success { color: var(--nl-success); }
+.nl-text-error   { color: var(--nl-error); }
+.nl-flex-center  { display: flex; align-items: center; justify-content: center; }
+.nl-flex-between { display: flex; align-items: center; justify-content: space-between; }
+.nl-gap-2        { gap: 8px; }
+.nl-gap-3        { gap: 12px; }
+.nl-gap-4        { gap: 16px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+}

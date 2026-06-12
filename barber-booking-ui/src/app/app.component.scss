@@ -1,226 +1,226 @@
-// New Look — Angular Material custom theme
-// Matches: gold (#C9A84C), dark ink (#0e0e0e), surface (#f7f5f0)
+// // New Look — Angular Material custom theme
+// // Matches: gold (#C9A84C), dark ink (#0e0e0e), surface (#f7f5f0)
 
-@use '@angular/material' as mat;
+// @use '@angular/material' as mat;
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
-// ─── Custom gold palette ───────────────────────────────────────────────────
-$nl-gold-palette: (
-  50:  #fef9ec,
-  100: #fdf0c8,
-  200: #fae59a,
-  300: #f5d464,
-  400: #efc038,
-  500: #C9A84C,   // primary brand gold
-  600: #b8912a,
-  700: #8a6f2e,   // gold-dim
-  800: #6b5420,
-  900: #4a3a15,
-  contrast: (
-    50:   rgba(0,0,0,0.87),
-    100:  rgba(0,0,0,0.87),
-    200:  rgba(0,0,0,0.87),
-    300:  rgba(0,0,0,0.87),
-    400:  rgba(0,0,0,0.87),
-    500:  rgba(0,0,0,0.87),
-    600:  rgba(0,0,0,0.87),
-    700:  white,
-    800:  white,
-    900:  white,
-  )
-);
+// // ─── Custom gold palette ───────────────────────────────────────────────────
+// $nl-gold-palette: (
+//   50:  #fef9ec,
+//   100: #fdf0c8,
+//   200: #fae59a,
+//   300: #f5d464,
+//   400: #efc038,
+//   500: #C9A84C,   // primary brand gold
+//   600: #b8912a,
+//   700: #8a6f2e,   // gold-dim
+//   800: #6b5420,
+//   900: #4a3a15,
+//   contrast: (
+//     50:   rgba(0,0,0,0.87),
+//     100:  rgba(0,0,0,0.87),
+//     200:  rgba(0,0,0,0.87),
+//     300:  rgba(0,0,0,0.87),
+//     400:  rgba(0,0,0,0.87),
+//     500:  rgba(0,0,0,0.87),
+//     600:  rgba(0,0,0,0.87),
+//     700:  white,
+//     800:  white,
+//     900:  white,
+//   )
+// );
 
-// ─── Custom ink/dark palette ───────────────────────────────────────────────
-$nl-ink-palette: (
-  50:  #f0ede6,
-  100: #d4cfc5,
-  200: #b4aea2,
-  300: #938d80,
-  400: #6b6560,
-  500: #0e0e0e,   // ink
-  600: #0c0c0c,
-  700: #0a0a0a,
-  800: #080808,
-  900: #050505,
-  contrast: (
-    50:  rgba(0,0,0,0.87),
-    100: rgba(0,0,0,0.87),
-    200: rgba(0,0,0,0.87),
-    300: rgba(0,0,0,0.87),
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
-);
+// // ─── Custom ink/dark palette ───────────────────────────────────────────────
+// $nl-ink-palette: (
+//   50:  #f0ede6,
+//   100: #d4cfc5,
+//   200: #b4aea2,
+//   300: #938d80,
+//   400: #6b6560,
+//   500: #0e0e0e,   // ink
+//   600: #0c0c0c,
+//   700: #0a0a0a,
+//   800: #080808,
+//   900: #050505,
+//   contrast: (
+//     50:  rgba(0,0,0,0.87),
+//     100: rgba(0,0,0,0.87),
+//     200: rgba(0,0,0,0.87),
+//     300: rgba(0,0,0,0.87),
+//     400: white,
+//     500: white,
+//     600: white,
+//     700: white,
+//     800: white,
+//     900: white,
+//   )
+// );
 
-// ─── Define theme ──────────────────────────────────────────────────────────
-$nl-primary:   mat.m2-define-palette($nl-gold-palette, 500, 300, 700);
-$nl-accent:    mat.m2-define-palette($nl-ink-palette,  500, 100, 900);
-$nl-warn:      mat.m2-define-palette(mat.$m2-red-palette);
+// // ─── Define theme ──────────────────────────────────────────────────────────
+// $nl-primary:   mat.m2-define-palette($nl-gold-palette, 500, 300, 700);
+// $nl-accent:    mat.m2-define-palette($nl-ink-palette,  500, 100, 900);
+// $nl-warn:      mat.m2-define-palette(mat.$m2-red-palette);
 
-$nl-typography: mat.m2-define-typography-config(
-  $font-family:   'DM Sans, sans-serif',
-  $headline-1:    mat.m2-define-typography-level(32px, 40px, 700, 'Syne, sans-serif'),
-  $headline-2:    mat.m2-define-typography-level(26px, 32px, 700, 'Syne, sans-serif'),
-  $headline-3:    mat.m2-define-typography-level(22px, 28px, 700, 'Syne, sans-serif'),
-  $headline-4:    mat.m2-define-typography-level(18px, 24px, 600, 'Syne, sans-serif'),
-  $headline-5:    mat.m2-define-typography-level(15px, 22px, 700, 'Syne, sans-serif'),
-  $headline-6:    mat.m2-define-typography-level(13px, 20px, 600, 'Syne, sans-serif'),
-  $body-1:        mat.m2-define-typography-level(13.5px, 20px, 400),
-  $body-2:        mat.m2-define-typography-level(12px, 18px, 400),
-  $caption:       mat.m2-define-typography-level(11px, 16px, 400),
-  $button:        mat.m2-define-typography-level(13px, 20px, 500),
-);
+// $nl-typography: mat.m2-define-typography-config(
+//   $font-family:   'DM Sans, sans-serif',
+//   $headline-1:    mat.m2-define-typography-level(32px, 40px, 700, 'Syne, sans-serif'),
+//   $headline-2:    mat.m2-define-typography-level(26px, 32px, 700, 'Syne, sans-serif'),
+//   $headline-3:    mat.m2-define-typography-level(22px, 28px, 700, 'Syne, sans-serif'),
+//   $headline-4:    mat.m2-define-typography-level(18px, 24px, 600, 'Syne, sans-serif'),
+//   $headline-5:    mat.m2-define-typography-level(15px, 22px, 700, 'Syne, sans-serif'),
+//   $headline-6:    mat.m2-define-typography-level(13px, 20px, 600, 'Syne, sans-serif'),
+//   $body-1:        mat.m2-define-typography-level(13.5px, 20px, 400),
+//   $body-2:        mat.m2-define-typography-level(12px, 18px, 400),
+//   $caption:       mat.m2-define-typography-level(11px, 16px, 400),
+//   $button:        mat.m2-define-typography-level(13px, 20px, 500),
+// );
 
-$nl-light-theme: mat.m2-define-light-theme((
-  color: (
-    primary:    $nl-primary,
-    accent:     $nl-accent,
-    warn:       $nl-warn,
-  ),
-  typography: $nl-typography,
-  density: -1,
-));
+// $nl-light-theme: mat.m2-define-light-theme((
+//   color: (
+//     primary:    $nl-primary,
+//     accent:     $nl-accent,
+//     warn:       $nl-warn,
+//   ),
+//   typography: $nl-typography,
+//   density: -1,
+// ));
 
-$nl-dark-theme: mat.m2-define-dark-theme((
-  color: (
-    primary:    $nl-primary,
-    accent:     $nl-accent,
-    warn:       $nl-warn,
-  ),
-  typography: $nl-typography,
-  density: -1,
-));
+// $nl-dark-theme: mat.m2-define-dark-theme((
+//   color: (
+//     primary:    $nl-primary,
+//     accent:     $nl-accent,
+//     warn:       $nl-warn,
+//   ),
+//   typography: $nl-typography,
+//   density: -1,
+// ));
 
-// ─── Apply themes ──────────────────────────────────────────────────────────
-@include mat.all-component-themes($nl-light-theme);
+// // ─── Apply themes ──────────────────────────────────────────────────────────
+// @include mat.all-component-themes($nl-light-theme);
 
-@media (prefers-color-scheme: dark) {
-  @include mat.all-component-colors($nl-dark-theme);
-}
+// @media (prefers-color-scheme: dark) {
+//   @include mat.all-component-colors($nl-dark-theme);
+// }
 
-// ─── Design tokens (used by all components) ───────────────────────────────
-:root {
-  --nl-gold:         #C9A84C;
-  --nl-gold-light:   #f0d890;
-  --nl-gold-dim:     #8a6f2e;
-  --nl-ink:          #0e0e0e;
-  --nl-surface:      #f7f5f0;
-  --nl-card:         #ffffff;
-  --nl-muted:        #6b6560;
-  --nl-border:       rgba(14, 14, 14, 0.10);
-  --nl-tag-bg:       #f0ede6;
-  --nl-green:        #2d6a4f;
-  --nl-green-bg:     #e8f4f0;
-  --nl-red:          #c0392b;
-  --nl-red-bg:       #fdecea;
-  --nl-blue:         #1d4e89;
-  --nl-blue-bg:      #e8f0fa;
-  --nl-purple:       #534AB7;
-  --nl-purple-bg:    #EEEDFE;
-  --nl-purple-bdr:   #CECBF6;
+// // ─── Design tokens (used by all components) ───────────────────────────────
+// :root {
+//   --nl-gold:         #C9A84C;
+//   --nl-gold-light:   #f0d890;
+//   --nl-gold-dim:     #8a6f2e;
+//   --nl-ink:          #0e0e0e;
+//   --nl-surface:      #f7f5f0;
+//   --nl-card:         #ffffff;
+//   --nl-muted:        #6b6560;
+//   --nl-border:       rgba(14, 14, 14, 0.10);
+//   --nl-tag-bg:       #f0ede6;
+//   --nl-green:        #2d6a4f;
+//   --nl-green-bg:     #e8f4f0;
+//   --nl-red:          #c0392b;
+//   --nl-red-bg:       #fdecea;
+//   --nl-blue:         #1d4e89;
+//   --nl-blue-bg:      #e8f0fa;
+//   --nl-purple:       #534AB7;
+//   --nl-purple-bg:    #EEEDFE;
+//   --nl-purple-bdr:   #CECBF6;
 
-  --nl-font-display: 'Syne', sans-serif;
-  --nl-font-body:    'DM Sans', sans-serif;
-}
+//   --nl-font-display: 'Syne', sans-serif;
+//   --nl-font-body:    'DM Sans', sans-serif;
+// }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --nl-ink:       #f0ede6;
-    --nl-surface:   #141210;
-    --nl-card:      #1e1c19;
-    --nl-muted:     #8a8480;
-    --nl-border:    rgba(240, 237, 230, 0.09);
-    --nl-tag-bg:    #252320;
-    --nl-green-bg:  #0a1f16;
-    --nl-red-bg:    #1f0a09;
-    --nl-blue-bg:   #091529;
-    --nl-purple-bg: #1a1840;
-  }
-}
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     --nl-ink:       #f0ede6;
+//     --nl-surface:   #141210;
+//     --nl-card:      #1e1c19;
+//     --nl-muted:     #8a8480;
+//     --nl-border:    rgba(240, 237, 230, 0.09);
+//     --nl-tag-bg:    #252320;
+//     --nl-green-bg:  #0a1f16;
+//     --nl-red-bg:    #1f0a09;
+//     --nl-blue-bg:   #091529;
+//     --nl-purple-bg: #1a1840;
+//   }
+// }
 
-// ─── Global resets & mat overrides ────────────────────────────────────────
-* { box-sizing: border-box; }
+// // ─── Global resets & mat overrides ────────────────────────────────────────
+// * { box-sizing: border-box; }
 
-body {
-  font-family: var(--nl-font-body);
-  background: var(--nl-surface);
-  color: var(--nl-ink);
-  margin: 0;
-}
+// body {
+//   font-family: var(--nl-font-body);
+//   background: var(--nl-surface);
+//   color: var(--nl-ink);
+//   margin: 0;
+// }
 
-// Mat card — use our card bg + border instead of mat elevation
-mat-card, .mat-mdc-card {
-  background: var(--nl-card) !important;
-  border: 0.5px solid var(--nl-border) !important;
-  border-radius: 12px !important;
-  box-shadow: none !important;
-}
+// // Mat card — use our card bg + border instead of mat elevation
+// mat-card, .mat-mdc-card {
+//   background: var(--nl-card) !important;
+//   border: 0.5px solid var(--nl-border) !important;
+//   border-radius: 12px !important;
+//   box-shadow: none !important;
+// }
 
-// Mat sidenav — flat, no shadow
-mat-sidenav, .mat-drawer {
-  background: var(--nl-card) !important;
-  border-right: 0.5px solid var(--nl-border) !important;
-  box-shadow: none !important;
-}
+// // Mat sidenav — flat, no shadow
+// mat-sidenav, .mat-drawer {
+//   background: var(--nl-card) !important;
+//   border-right: 0.5px solid var(--nl-border) !important;
+//   box-shadow: none !important;
+// }
 
-// Mat toolbar — flat navbar
-mat-toolbar.nl-navbar {
-  background: var(--nl-card) !important;
-  border-bottom: 0.5px solid var(--nl-border) !important;
-  box-shadow: none !important;
-  height: 60px !important;
-  padding: 0 28px !important;
-}
+// // Mat toolbar — flat navbar
+// mat-toolbar.nl-navbar {
+//   background: var(--nl-card) !important;
+//   border-bottom: 0.5px solid var(--nl-border) !important;
+//   box-shadow: none !important;
+//   height: 60px !important;
+//   padding: 0 28px !important;
+// }
 
-// Mat list item active state
-.mat-mdc-list-item.nl-active {
-  background: var(--nl-ink) !important;
-  color: var(--nl-surface) !important;
-  border-radius: 8px !important;
-  .mdc-list-item__primary-text { color: var(--nl-surface) !important; }
-  mat-icon { color: var(--nl-surface) !important; }
-}
+// // Mat list item active state
+// .mat-mdc-list-item.nl-active {
+//   background: var(--nl-ink) !important;
+//   color: var(--nl-surface) !important;
+//   border-radius: 8px !important;
+//   .mdc-list-item__primary-text { color: var(--nl-surface) !important; }
+//   mat-icon { color: var(--nl-surface) !important; }
+// }
 
-// Mat chip — verified badge style
-.mat-mdc-chip.nl-chip-verified {
-  background: var(--nl-green-bg) !important;
-  color: var(--nl-green) !important;
-  border: 0.5px solid #9fd4c0 !important;
-  font-size: 10px !important;
-  height: 20px !important;
-}
+// // Mat chip — verified badge style
+// .mat-mdc-chip.nl-chip-verified {
+//   background: var(--nl-green-bg) !important;
+//   color: var(--nl-green) !important;
+//   border: 0.5px solid #9fd4c0 !important;
+//   font-size: 10px !important;
+//   height: 20px !important;
+// }
 
-.mat-mdc-chip.nl-chip-walkin {
-  background: var(--nl-purple-bg) !important;
-  color: var(--nl-purple) !important;
-  border: 0.5px solid var(--nl-purple-bdr) !important;
-  font-size: 10px !important;
-  height: 20px !important;
-}
+// .mat-mdc-chip.nl-chip-walkin {
+//   background: var(--nl-purple-bg) !important;
+//   color: var(--nl-purple) !important;
+//   border: 0.5px solid var(--nl-purple-bdr) !important;
+//   font-size: 10px !important;
+//   height: 20px !important;
+// }
 
-// Mat tab — nav tabs override
-.mat-mdc-tab-link, .mdc-tab {
-  font-family: var(--nl-font-body) !important;
-  font-size: 13px !important;
-  min-width: unset !important;
-  padding: 0 14px !important;
-}
+// // Mat tab — nav tabs override
+// .mat-mdc-tab-link, .mdc-tab {
+//   font-family: var(--nl-font-body) !important;
+//   font-size: 13px !important;
+//   min-width: unset !important;
+//   padding: 0 14px !important;
+// }
 
-// Mat button — flat pill button override
-button.nl-btn-gold {
-  background: var(--nl-gold) !important;
-  color: #0e0e0e !important;
-  font-weight: 600 !important;
-  font-family: var(--nl-font-body) !important;
-  border-radius: 8px !important;
-  &:hover { background: var(--nl-gold-light) !important; }
-}
+// // Mat button — flat pill button override
+// button.nl-btn-gold {
+//   background: var(--nl-gold) !important;
+//   color: #0e0e0e !important;
+//   font-weight: 600 !important;
+//   font-family: var(--nl-font-body) !important;
+//   border-radius: 8px !important;
+//   &:hover { background: var(--nl-gold-light) !important; }
+// }
 
-// Scrollbar
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--nl-border); border-radius: 99px; }
+// // Scrollbar
+// ::-webkit-scrollbar { width: 4px; }
+// ::-webkit-scrollbar-thumb { background: var(--nl-border); border-radius: 99px; }

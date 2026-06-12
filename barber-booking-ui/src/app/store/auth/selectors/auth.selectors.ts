@@ -47,5 +47,8 @@ export const AuthSelectors = {
   ),
   selectActiveRole: createSelector(
     selectAuthState, s => s.activeRole
+  ),
+  selectHasShop: createSelector(
+    selectAuthState, s => 1
   )
 };
