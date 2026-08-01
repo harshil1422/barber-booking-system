@@ -32,6 +32,12 @@ public class AuthDtos {
             @Size(min = 8, message = "Password must be at least 8 characters")
             String password
     ) {}
+    public record RegisterResponse(
+            String id,
+            boolean error,
+            String message
+    ){
+    }
 
     // ─── Token response ──────────────────────────────────────────────────────
 

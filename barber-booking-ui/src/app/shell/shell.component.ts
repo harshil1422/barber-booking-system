@@ -61,7 +61,7 @@ export class ShellComponent implements OnInit {
   protected hasShop  = this.store.selectSignal(AuthSelectors.selectHasShop);
 
   // Local UI signals
-  protected sidenavOpen = signal(true);
+  protected sidenavOpen = signal(false);
   protected activeRole  = signal<UserRole>('USER');
 
   // Notification unread count from SSE service

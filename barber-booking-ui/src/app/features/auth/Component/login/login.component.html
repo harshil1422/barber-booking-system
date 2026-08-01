@@ -9,7 +9,7 @@
       <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
     </mat-card-header>
 
-    <!-- Content -->
+    <!--   -->
     <mat-card-content>
 
       <!-- Error banner -->
@@ -21,12 +21,12 @@
       </div>
 
       <!-- Success banner -->
-      <!-- <div class="success-banner"
-           *ngIf="route.snapshot.queryParams['registered']"
+      <div class="success-banner"
+           *ngIf="isRegistered "
            role="status">
         <mat-icon>check_circle</mat-icon>
         <span>Account created — you can now sign in.</span>
-      </div> -->
+      </div>
 
       <!-- Form -->
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
