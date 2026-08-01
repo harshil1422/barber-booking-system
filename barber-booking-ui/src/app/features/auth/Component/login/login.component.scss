@@ -1,72 +1,240 @@
+// ─────────────────────────────────────────────────────────────
+// login.component.scss
+// Same New Look design tokens as the navbar/shell components.
+// ─────────────────────────────────────────────────────────────
+
+:host {
+  --nl-ink: #0e0e0e;
+  --nl-gold: #C9A84C;
+  --nl-gold-light: #f0d890;
+  --nl-gold-dim: #8a6f2e;
+  --nl-surface: #f7f5f0;
+  --nl-card: #ffffff;
+  --nl-muted: #6b6560;
+  --nl-border: rgba(14, 14, 14, 0.10);
+  --nl-tag-bg: #f0ede6;
+  --nl-red: #c0392b;
+  --nl-red-bg: #fdecea;
+  --nl-green: #2d6a4f;
+  --nl-green-bg: #e8f4f0;
+
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --nl-ink: #f0ede6;
+    --nl-surface: #141210;
+    --nl-card: #1e1c19;
+    --nl-muted: #8a8480;
+    --nl-border: rgba(240, 237, 230, 0.09);
+    --nl-tag-bg: #252320;
+    --nl-red-bg: #1f0a09;
+    --nl-green-bg: #0a1f16;
+  }
+}
+
+// ── Page shell ──────────────────────────────────────────────
 .auth-container {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 16px;
-  background: var(--mat-app-background-color, #f5f5f5);
+  padding: 24px;
+  background: var(--nl-surface);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(201, 168, 76, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(201, 168, 76, 0.06), transparent 40%);
+  font-family: 'DM Sans', sans-serif;
 }
 
+// ── Card ────────────────────────────────────────────────────
 .auth-card {
   width: 100%;
-  max-width: 420px;
-  padding: 8px 16px 24px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  max-width: 380px;
+  padding: 28px 28px 20px;
+  border-radius: 16px !important;
+  border: 0.5px solid var(--nl-border);
+  background: var(--nl-card) !important;
+  box-shadow: 0 12px 32px rgba(14, 14, 14, 0.10) !important;
 }
 
+// ── Header ──────────────────────────────────────────────────
 .auth-title {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px 0 8px;
+  margin-bottom: 4px;
 }
 
 .brand {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--mat-toolbar-container-text-color, #1a237e);
-  letter-spacing: -0.5px;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.submit-btn {
-  width: 100%;
-  height: 44px;
-  margin-top: 8px;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
 }
 
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--nl-gold);
+  color: #0e0e0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.3px;
+  color: var(--nl-ink);
+}
+
+.auth-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--nl-muted) !important;
+  margin-top: 2px;
+}
+
+// ── Banners ─────────────────────────────────────────────────
 .error-banner,
 .success-banner {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  margin-bottom: 16px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin: 16px 0 4px;
+
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
 }
 
 .error-banner {
-  background: #fce8e8;
-  color: #c62828;
-  mat-icon { color: #c62828; font-size: 18px; }
+  background: var(--nl-red-bg);
+  color: var(--nl-red);
+  border: 0.5px solid rgba(192, 57, 43, 0.25);
 }
 
 .success-banner {
-  background: #e8f5e9;
-  color: #2e7d32;
-  mat-icon { color: #2e7d32; font-size: 18px; }
+  background: var(--nl-green-bg);
+  color: var(--nl-green);
+  border: 0.5px solid rgba(45, 106, 79, 0.25);
+}
+
+// ── Form ────────────────────────────────────────────────────
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+}
+
+.full-width {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background: var(--nl-tag-bg);
+    border-radius: 10px;
+  }
+
+  ::ng-deep .mdc-notched-outline > * {
+    border-color: var(--nl-border) !important;
+  }
+
+  // Material's MDC outline field applies its own hover-state border color
+  // (usually the theme's primary/blue) — this overrides it back to neutral.
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline > * {
+    border-color: var(--nl-border) !important;
+  }
+
+  &.mat-focused ::ng-deep .mdc-notched-outline > * {
+    border-color: var(--nl-gold) !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-icon-prefix {
+    color: var(--nl-muted);
+    padding-right: 6px;
+  }
+
+  // Prefix/suffix icons also pick up the theme color on hover via a
+  // higher-specificity internal selector, so !important is needed here too.
+  ::ng-deep .mat-mdc-form-field-icon-prefix .mat-icon,
+  ::ng-deep .mat-mdc-form-field-icon-suffix .mat-icon {
+    color: var(--nl-muted) !important;
+  }
+
+  ::ng-deep input.mat-mdc-input-element {
+    color: var(--nl-ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  ::ng-deep .mat-mdc-form-field-label {
+    color: var(--nl-muted);
+  }
+}
+
+// ── Submit button ───────────────────────────────────────────
+.submit-btn {
+  height: 44px;
+  border-radius: 10px !important;
+  background: var(--nl-gold) !important;
+  color: #0e0e0e !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  margin-top: 6px;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not([disabled]) {
+    background: var(--nl-gold-light) !important;
+  }
+
+  &[disabled] {
+    opacity: 0.7;
+  }
+}
+
+.btn-spinner {
+  ::ng-deep circle {
+    stroke: #0e0e0e;
+  }
+}
+
+// ── Footer ──────────────────────────────────────────────────
+.card-footer {
+  justify-content: center;
+  padding: 14px 0 4px !important;
+  border-top: 0.5px solid var(--nl-border);
+  margin-top: 8px;
 }
 
 .register-link {
-  font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 12.5px;
+  color: var(--nl-muted);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  a {
+    font-weight: 600;
+    color: var(--nl-gold-dim) !important;
+    font-size: 12.5px;
+    padding: 0 4px !important;
+
+    &:hover {
+      color: var(--nl-gold) !important;
+    }
+  }
 }

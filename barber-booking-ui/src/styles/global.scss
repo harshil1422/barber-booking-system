@@ -1,56 +1,111 @@
-// src/styles/global.scss
-// All global rules are already embedded in theme.scss
-// This file handles additional utility classes and animations
+// ─────────────────────────────────────────────────────────────
+// Add to src/styles.scss (global stylesheet).
+//
+// mat-menu panels render in a CDK overlay attached to <body>, so
+// they're outside this component's view and can't be reached by
+// component-scoped SCSS. The `class="nl-notif-menu"` attribute on
+// <mat-menu> is forwarded straight to the overlay panel (MatMenu's
+// `class` input doubles as its panelClass), so styling by that
+// selector here works.
+//
+// The account menu in the template has no class yet — add
+// class="nl-account-menu" to <mat-menu #accountMenu="matMenu"> to
+// hook up the styles below.
+// ─────────────────────────────────────────────────────────────
 
-// ── Fonts ─────────────────────────────────────────────────────
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
+@mixin nl-menu-panel-base {
+  border-radius: 10px !important;
+  border: 0.5px solid var(--nl-border, rgba(14, 14, 14, 0.10));
+  background: var(--nl-card, #ffffff) !important;
+  padding: 0 !important;
+  overflow: hidden;
 
-// ── Page enter animation ──────────────────────────────────────
-@keyframes nl-fade-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  .mat-mdc-menu-item {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--nl-ink, #0e0e0e);
+    min-height: 40px;
+
+    &:hover:not([disabled]) {
+      background: var(--nl-tag-bg, #f0ede6);
+    }
+
+    .mat-icon {
+      color: var(--nl-muted, #6b6560);
+      margin-right: 10px;
+      font-size: 18px;
+    }
+  }
+
+  .mat-divider {
+    border-top-color: var(--nl-border, rgba(14, 14, 14, 0.10));
+  }
 }
 
-.nl-animate-in {
-  animation: nl-fade-up 0.3s ease both;
+// ── Notifications dropdown ──────────────────────────────────
+.nl-notif-menu {
+  @include nl-menu-panel-base;
+  min-width: 300px !important;
+
+  .nl-notif-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    cursor: default;
+
+    span {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--nl-ink, #0e0e0e);
+    }
+
+    .mat-mdc-button {
+      font-size: 11.5px;
+      color: var(--nl-gold-dim, #8a6f2e);
+      line-height: 24px;
+      padding: 0 6px;
+    }
+  }
+
+  .nl-notif-empty {
+    padding: 24px 14px;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    color: var(--nl-muted, #6b6560);
+  }
 }
 
-// ── Loading shimmer ───────────────────────────────────────────
-@keyframes nl-shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
+// ── Account menu ─────────────────────────────────────────────
+.nl-account-menu {
+  @include nl-menu-panel-base;
+  min-width: 220px !important;
 
-.nl-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--nl-surface) 25%,
-    #e8e5de 50%,
-    var(--nl-surface) 75%
-  );
-  background-size: 800px 100%;
-  animation: nl-shimmer 1.4s infinite;
-  border-radius: 8px;
-}
+  .nl-account-header {
+    padding: 12px 14px 10px;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 
-// ── Scrollbar ─────────────────────────────────────────────────
-::-webkit-scrollbar       { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--nl-border-md); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--nl-text-disabled); }
+    strong {
+      font-family: 'Syne', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--nl-ink, #0e0e0e);
+    }
 
-// ── Utility ───────────────────────────────────────────────────
-.nl-text-gold    { color: var(--nl-gold); }
-.nl-text-muted   { color: var(--nl-text-secondary); }
-.nl-text-success { color: var(--nl-success); }
-.nl-text-error   { color: var(--nl-error); }
-.nl-flex-center  { display: flex; align-items: center; justify-content: center; }
-.nl-flex-between { display: flex; align-items: center; justify-content: space-between; }
-.nl-gap-2        { gap: 8px; }
-.nl-gap-3        { gap: 12px; }
-.nl-gap-4        { gap: 16px; }
-.sr-only {
-  position: absolute; width: 1px; height: 1px;
-  overflow: hidden; clip: rect(0,0,0,0);
+    span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px;
+      color: var(--nl-muted, #6b6560);
+    }
+  }
+
+  .nl-logout .mat-icon,
+  .nl-logout {
+    color: #c0392b !important;
+  }
 }

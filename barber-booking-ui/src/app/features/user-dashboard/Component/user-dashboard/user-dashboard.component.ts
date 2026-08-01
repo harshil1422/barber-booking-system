@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavbarComponent } from '@shared/components/navbar/navbar/navbar.component';
+import { NavbarComponent } from '@core/layout/navbar/navbar.component';
 
 @Component({
   selector: 'app-user-dashboard',

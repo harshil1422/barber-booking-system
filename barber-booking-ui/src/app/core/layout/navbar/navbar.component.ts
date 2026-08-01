@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import {  AuthSelectors } from '@store/auth/selectors/auth.selectors';
 import { AuthActions,  } from '@store/auth/actions/auth.actions';
 import { DashboardActions } from '@store/dashboard/dashboard.action';
-import { MatDivider } from '@angular/material/divider';
+
 
  
 
@@ -24,7 +24,7 @@ import { MatDivider } from '@angular/material/divider';
     MatMenuModule,
     MatIconModule,
     MatBadgeModule,
-    MatDivider
+    
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

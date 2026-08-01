@@ -4,9 +4,12 @@
     <!-- Header -->
     <mat-card-header>
       <mat-card-title class="auth-title">
-        <span class="brand">✂ Barber Booking</span>
+        <span class="brand">
+          <span class="brand-icon">✂</span>
+          <span class="brand-name">Barber Booking</span>
+        </span>
       </mat-card-title>
-      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+      <mat-card-subtitle class="auth-subtitle">Sign in to your account</mat-card-subtitle>
     </mat-card-header>
 
     <!--   -->
@@ -29,7 +32,7 @@
       </div>
 
       <!-- Form -->
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form">
 
         <!-- Username -->
         <mat-form-field appearance="outline" class="full-width">
@@ -78,7 +81,7 @@
           [disabled]="isLoading$ | async">
 
           <ng-container *ngIf="isLoading$ | async; else btnText">
-            <mat-spinner diameter="20"></mat-spinner>
+            <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
           </ng-container>
 
           <ng-template #btnText>

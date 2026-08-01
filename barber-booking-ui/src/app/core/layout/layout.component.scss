@@ -1,0 +1,19 @@
+.layout-container{
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+}
+
+.main-content{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    overflow:hidden;
+}
+
+.page-content{
+    flex:1;
+    overflow:auto;
+    padding:24px;
+    background:#f5f7fa;
+}

@@ -16,14 +16,19 @@ export const APP_ROUTES: Routes = [
     path: '',
     // canActivate: [authGuard],
     loadComponent: () =>
-      import('./shell/shell.component').then(c => c.ShellComponent),
+      import('./core/layout/layout.component').then(c => c.LayoutComponent),
     children: [
 
        {
     path: 'dashboard',
     loadChildren: () => import('./features/user-dashboard/user-dashboard.routes')
     .then(d=> d.USER_DASHBOARD_ROUTES)
-  },
+  },{
+    path: '',
+     loadChildren: () => import('./features/user-dashboard/user-dashboard.routes')
+    .then(d=> d.USER_DASHBOARD_ROUTES),
+    pathMatch: 'full'
+  }
 
     ]
   },

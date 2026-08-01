@@ -1,10 +1,4 @@
 <mat-toolbar class="nl-navbar">
-      <!-- Logo -->
-      <a routerLink="/dashboard" class="nl-logo">
-        <span class="nl-logo-icon">✂</span>
-         New
-        <span class="nl-logo-gold">Look</span>
-      </a>
  
       <!-- Nav tabs -->
       <nav class="nl-nav-tabs">
@@ -20,25 +14,5 @@
           <button mat-button routerLink="/barber/earnings" routerLinkActive="nl-tab-active">Earnings</button>
         }
       </nav>
- 
-      <span class="nl-spacer"></span>
- 
-      <!-- Role pill -->
-      <span class="nl-role-pill" [class.barber]="(activeRole()) === 'BARBER'">
-        {{ activeRole() === 'BARBER' ? 'Barber' : 'User' }}
-      </span>
- 
-      <!-- Avatar menu -->
-      <button mat-icon-button [matMenuTriggerFor]="avatarMenu" class="nl-avatar">
-        {{initials()}}
-      </button>
-      <mat-menu #avatarMenu="matMenu">
-        @if (isBarber()) {
-          <button mat-menu-item (click)="switchToRole('BARBER')">Switch to Barber View</button>
-          <button mat-menu-item (click)="switchToRole('USER')">Switch to User View</button>
-          <mat-divider></mat-divider>
-        }
-        <button mat-menu-item routerLink="/register-shop">Register Shop</button>
-        <button mat-menu-item (click)="onLogout()">Sign Out</button>
-      </mat-menu>
+  
     </mat-toolbar>

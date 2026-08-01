@@ -1,0 +1,165 @@
+// ─────────────────────────────────────────────────────────────
+// nl-navbar.component.scss
+//
+// Assumes the design-token custom properties below are already
+// declared globally in src/styles.scss (they're shared with every
+// other New Look component — sidebar, cards, etc). Re-declaring
+// them here too as a safe fallback in case this component is ever
+// rendered standalone / lazy-loaded before the global sheet loads.
+// ─────────────────────────────────────────────────────────────
+
+:host {
+  --nl-ink: #0e0e0e;
+  --nl-gold: #C9A84C;
+  --nl-gold-light: #f0d890;
+  --nl-gold-dim: #8a6f2e;
+  --nl-surface: #f7f5f0;
+  --nl-card: #ffffff;
+  --nl-muted: #6b6560;
+  --nl-border: rgba(14, 14, 14, 0.10);
+
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --nl-ink: #f0ede6;
+    --nl-surface: #141210;
+    --nl-card: #1e1c19;
+    --nl-muted: #8a8480;
+    --nl-border: rgba(240, 237, 230, 0.09);
+  }
+}
+
+// ── Toolbar shell ───────────────────────────────────────────
+.nl-navbar {
+  height: 60px;
+  padding: 0 28px !important;
+  background: var(--nl-card) !important;
+  color: var(--nl-ink) !important;
+  border-bottom: 0.5px solid var(--nl-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 4px;
+}
+
+// ── Logo ────────────────────────────────────────────────────
+.nl-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  color: var(--nl-ink);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--nl-ink);
+  }
+}
+
+.nl-logo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--nl-gold);
+  color: #0e0e0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.nl-logo-gold {
+  color: var(--nl-gold);
+}
+
+// ── Nav tabs ────────────────────────────────────────────────
+.nl-nav-tabs {
+  display: flex;
+  gap: 4px;
+  margin-left: 24px;
+
+  .mat-mdc-button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--nl-muted);
+    border-radius: 6px;
+    padding: 0 14px;
+    height: 34px;
+    line-height: 34px;
+    min-width: 0;
+    transition: background-color 0.15s, color 0.15s;
+
+    &:hover {
+      background: var(--nl-border-hover, rgba(14, 14, 14, 0.06));
+      color: var(--nl-ink);
+    }
+
+    &.nl-tab-active {
+      background: var(--nl-ink);
+      color: var(--nl-surface);
+      font-weight: 500;
+
+      &:hover {
+        background: var(--nl-ink);
+        color: var(--nl-surface);
+      }
+    }
+  }
+}
+
+// ── Spacer ──────────────────────────────────────────────────
+.nl-spacer {
+  flex: 1 1 auto;
+}
+
+// ── Role pill ───────────────────────────────────────────────
+.nl-role-pill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 0.5px solid var(--nl-border);
+  background: #e8f4f0;
+  color: #1a5c42;
+  margin-right: 12px;
+  white-space: nowrap;
+
+  &.barber {
+    background: #fef3dc;
+    color: #7a5200;
+    border-color: var(--nl-gold-light);
+  }
+}
+
+// ── Avatar ──────────────────────────────────────────────────
+.nl-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--nl-gold);
+  color: #0e0e0e;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ::ng-deep .mat-mdc-button-touch-target {
+    width: 32px;
+    height: 32px;
+  }
+
+  ::ng-deep .mat-mdc-button-persistent-ripple {
+    border-radius: 50%;
+  }
+}
