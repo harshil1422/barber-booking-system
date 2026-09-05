@@ -1,0 +1,14 @@
+target/
+.git/
+.idea/
+*.iml
+
+.env
+.env.*
+application-local.yml
+application-dev.yml
+
+logs/
+*.log
+
+README.md

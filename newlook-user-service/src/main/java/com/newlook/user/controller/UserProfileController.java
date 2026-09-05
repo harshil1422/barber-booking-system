@@ -20,7 +20,7 @@ import java.util.UUID;
  * and never validates the JWT itself.
  */
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/user/users")
 @RequiredArgsConstructor
 @Tag(name = "User Profile")
 public class UserProfileController {
@@ -30,7 +30,8 @@ public class UserProfileController {
     @Operation(summary = "Get the authenticated user's own profile")
     @GetMapping("/me")
     public ResponseEntity<UserProfileResponse> getMyProfile(
-            @RequestHeader("X-User-Id") UUID userId) {
+           ) {
+        UUID userId= UUID.fromString("f302702a-8024-4d8f-b213-da847db9004d");
         return ResponseEntity.ok(userProfileService.getByUserId(userId));
     }
 

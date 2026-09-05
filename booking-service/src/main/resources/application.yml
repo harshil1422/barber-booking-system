@@ -1,11 +1,18 @@
+flyway:
+  enabled: true
+  locations: classpath:db/migration
+  schemas: booking_db
+  default-schema: booking_db
+  baseline-on-migrate: true
+
 spring:
   application:
     name: booking-service
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:booking_db}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:newlook_booking_db}?currentSchema=booking_db
     username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:test}
+    password: ${DB_PASSWORD:test_123}
     hikari:
       maximum-pool-size: 20
       minimum-idle: 5
@@ -24,14 +31,9 @@ spring:
           batch_size: 25
         order_inserts: true
         order_updates: true
-    show-sql: false
+    show-sql: true
     open-in-view: false
 
-  flyway:
-    enabled: true
-    locations: classpath:db/migration
-    schemas: booking_db
-    baseline-on-migrate: true
 
   data:
     redis:
@@ -50,10 +52,10 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all                  # Wait for all in-sync replicas
+      acks: all
       retries: 3
       properties:
-        enable.idempotence: true # Kafka producer-level idempotency
+        enable.idempotence: true
         max.in.flight.requests.per.connection: 1
 
 server:
@@ -72,9 +74,11 @@ management:
     web:
       exposure:
         include: health,info,prometheus,metrics
+
   endpoint:
     health:
       show-details: always
+
   metrics:
     tags:
       application: ${spring.application.name}
@@ -93,28 +97,44 @@ newlook:
     # Slot generation: how far in advance to generate slots (days)
     slot-generation-days-ahead: 14
 
-    # Chair service internal URL (for validation)
+    # Chair service internal URL
     chair-service-url: ${CHAIR_SERVICE_URL:http://chair-service:8085}
 
-    # Shop service internal URL (for cancellation policy lookup)
+    # Shop service internal URL
     shop-service-url: ${SHOP_SERVICE_URL:http://shop-service:8083}
 
-  outbox:
-    fallback-scheduler:
-      enabled: ${OUTBOX_FALLBACK_ENABLED:false}
+
+# ============================================================
+# OUTBOX
+# ============================================================
+
+outbox:
+  fallback-scheduler:
+    enabled: ${OUTBOX_FALLBACK_ENABLED:false}
+
+  publisher:
+    processing-timeout: 5m
+    fixed-delay: 1000
+    batch-size: 50
+    recovery-delay: 60000
+
+
+# ============================================================
+# DEVELOPMENT PROFILE
+# ============================================================
 
 ---
 spring:
   config:
     activate:
       on-profile: development
+
   jpa:
     show-sql: true
 
-newlook:
-  outbox:
-    fallback-scheduler:
-      enabled: true
+outbox:
+  fallback-scheduler:
+    enabled: true
 
 logging:
   level:

@@ -1,6 +1,7 @@
 package com.barberService.auth_service.controller;
 
 import com.barberService.auth_service.dto.AuthDtos;
+import com.barberService.auth_service.dto.UserServiceDtos;
 import com.barberService.auth_service.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -23,8 +24,8 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@Valid @RequestBody AuthDtos.RegisterRequest req) {
-        authService.register(req);
+    public UserServiceDtos.UserProfileResponse register(@Valid @RequestBody AuthDtos.RegisterRequest req) {
+       return authService.register(req);
     }
 
     @PostMapping("/login")

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8088
   servlet:
     context-path: /api/v1
   error:
@@ -49,7 +49,7 @@ spring:
           batch_size: 25
         order_inserts: true
         order_updates: true
-    show-sql: false
+    show-sql: true
     open-in-view: false
 
   flyway:
@@ -92,7 +92,7 @@ logging:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
 
   datasource:
     hikari:
@@ -102,9 +102,3 @@ logging:
   level:
     root: WARN
     com.newlook.user: INFO
-#internal:
-#  api-key: ${INTERNAL_API_KEY:my-secret-api-key}
-
-
-internal:
-  api-key: my-secret-api-key

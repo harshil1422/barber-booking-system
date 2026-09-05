@@ -2,6 +2,8 @@ package com.barberService.auth_service.service;
 
 import com.barberService.auth_service.dto.AuthDtos;
 import com.barberService.auth_service.dto.AuthDtos.TokenResponse;
+import com.barberService.auth_service.dto.UserServiceDtos;
+import com.barberService.auth_service.enums.UserRole;
 import com.barberService.auth_service.model.User;
 import com.barberService.auth_service.repository.RefreshTokenRepository;
 import com.barberService.auth_service.repository.UserRepository;
@@ -27,6 +29,7 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final AuditService auditService;
+    private final UserServiceClient userServiceClient;
 
     @Transactional()
     public TokenResponse login(AuthDtos.LoginRequest req, HttpServletRequest httpReq) {
@@ -80,7 +83,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void register(AuthDtos.RegisterRequest req) {
+    public UserServiceDtos.UserProfileResponse register(AuthDtos.RegisterRequest req) {
         if (userRepository.existsByUsername(req.username())) {
             throw new IllegalArgumentException("Username already taken");
         }
@@ -94,6 +97,16 @@ public class AuthService {
                 .password(passwordEncoder.encode(req.password()))
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        UserServiceDtos.CreateUserProfileRequest userProfileRequest= new UserServiceDtos.CreateUserProfileRequest(
+                savedUser.getId(),
+                 savedUser.getUsername(),
+                "9925785919",
+                savedUser.getEmail(),
+                UserRole.USER
+
+        );
+        return    userServiceClient.createUser(userProfileRequest);
     }
 }

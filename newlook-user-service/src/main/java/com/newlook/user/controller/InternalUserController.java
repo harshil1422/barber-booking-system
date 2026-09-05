@@ -20,7 +20,7 @@ import java.util.UUID;
  * can't reach it directly.
  */
 @RestController
-@RequestMapping("/api/v1/internal/users")
+@RequestMapping("/internal/users")
 @RequiredArgsConstructor
 @Tag(name = "Internal - User Provisioning")
 public class InternalUserController {

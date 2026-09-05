@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableConfigurationProperties(JwtProperties.class)
-@EnableDiscoveryClient
 public class AuthServiceApplication {
 
 	public static void main(String[] args) {
