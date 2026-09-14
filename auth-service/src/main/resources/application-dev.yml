@@ -5,9 +5,9 @@ app:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/authdb_dev
-    username: authuser
-    password: devpassword
+    url: jdbc:postgresql://localhost:5432/barber_auth_db
+    username: postgres
+    password: test_123
 
   jpa:
     hibernate:

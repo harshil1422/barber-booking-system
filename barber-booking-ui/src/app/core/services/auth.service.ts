@@ -14,7 +14,7 @@ const REFRESH_TOKEN_KEY = 'nl_refresh_token';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly api = `${environment.apiGatewayUrl}/auth`;
+  private readonly api = `${environment.apiUrl}/auth`;
 
   // ── Angular Signals ──────────────────────────────────────
   private _user   = signal<UserProfile | null>(null);
@@ -105,7 +105,7 @@ export class AuthService {
         return;
       }
       // Re-fetch user profile to get latest roles/shopId
-      this.http.get<UserProfile>(`${environment.apiGatewayUrl}/users/me`).subscribe({
+      this.http.get<UserProfile>(`${environment.apiUrl}/v1/users/me`).subscribe({
         next:  user => { this._user.set(user); this._loaded.set(true); },
         error: ()   => { this.logout(); }
       });
