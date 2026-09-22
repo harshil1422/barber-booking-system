@@ -11,7 +11,7 @@ import java.util.UUID;
         schema = "user_db",
         uniqueConstraints = @UniqueConstraint(
                 name = "uk_user_preferences_user",
-                columnNames = "user_profile_id"
+                columnNames = "user_id"
         )
 )
 @Getter
@@ -27,18 +27,31 @@ public class UserPreferences {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_profile_id", nullable = false, unique = true)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "user_id",
+            nullable = false,
+            unique = true
+    )
     private UserProfile userProfile;
 
-    @Column(name = "notify_sms", nullable = false)
+    @Column(name = "sms_notifications", nullable = false)
     @Builder.Default
-    private boolean notifySms = true;
+    private boolean smsNotifications = true;
 
-    @Column(name = "notify_email", nullable = false)
+    @Column(name = "push_notifications", nullable = false)
     @Builder.Default
-    private boolean notifyEmail = true;
+    private boolean pushNotifications = true;
 
-    @Column(name = "preferred_radius_km")
+    @Column(name = "booking_reminders", nullable = false)
     @Builder.Default
-    private Double preferredRadiusKm = 2.0;
+    private boolean bookingReminders = true;
+
+    @Column(name = "marketing_notifications", nullable = false)
+    @Builder.Default
+    private boolean marketingNotifications = false;
+
+    @Column(name = "default_radius_km", nullable = false)
+    @Builder.Default
+    private Integer defaultRadiusKm = 5;
 }

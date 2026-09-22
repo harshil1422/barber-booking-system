@@ -14,7 +14,7 @@ const REFRESH_TOKEN_KEY = 'nl_refresh_token';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly api = `${environment.apiUrl}/auth`;
+  private readonly api = `${environment.apiUrl}/v1/auth`;
 
   // ── Angular Signals ──────────────────────────────────────
   private _user   = signal<UserProfile | null>(null);

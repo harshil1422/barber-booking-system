@@ -16,7 +16,7 @@ public class UserServiceClient {
     public UserServiceDtos.UserProfileResponse createUser(UserServiceDtos.CreateUserProfileRequest request) {
 
         return restClient.post()
-                .uri("http://localhost:8088/api/v1/internal/users")
+                .uri("http://user-service:8088/api/v1/internal/users")
                 .body(request)
                 .retrieve().body(UserServiceDtos.UserProfileResponse.class);
     }
