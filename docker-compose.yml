@@ -17,7 +17,7 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      
+
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -32,200 +32,135 @@ services:
     volumes:
       - kafka-data:/var/lib/kafka/data
 
-    healthcheck: 
-      test: 
-        [ "CMD-SHELL", 
-          "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list" 
-        ] 
-      interval: 10s 
-      timeout: 5s 
-      retries: 10 
-      start_period: 30s 
-    restart: unless-stopped 
-  
-  kafka-init:
-   image: apache/kafka:4.3.1
-   container_name: kafka-init 
-   
-   depends_on:
-     kafka:
-       condition: service_healthy 
-   
-   command: 
-            [ 
-               "bash", 
-               "-c", 
-               "/opt/kafka/bin/kafka-topics.sh \ 
-               --bootstrap-server kafka:29092 \ 
-               --create \ 
-               --if-not-exists \ 
-               --topic booking.appointment.events \ 
-               --partitions 3 \ 
-               --replication-factor 1" 
-            ]
-   restart: "no"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
-# postgrace booking db configuration 
+    restart: unless-stopped
+
+
+  kafka-init:
+    image: apache/kafka:4.3.1
+    container_name: kafka-init
+
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+    command:
+      [
+        "bash",
+        "-c",
+        "/opt/kafka/bin/kafka-topics.sh \
+        --bootstrap-server kafka:29092 \
+        --create \
+        --if-not-exists \
+        --topic booking.appointment.events \
+        --partitions 3 \
+        --replication-factor 1"
+      ]
+
+    restart: "no"
+
 
   booking-db:
     image: postgres:16
     container_name: booking-db
 
     ports:
-       - "5432:5432" 
+      - "5432:5432"
+
     environment:
       POSTGRES_DB: newlook_booking_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: test_123
-    
+
     volumes:
-      - booking-db-data:/var/lib/postgresql/data 
-    
+      - booking-db-data:/var/lib/postgresql/data
+
     healthcheck:
-     test: [ "CMD-SHELL", "pg_isready -U postgres -d newlook_booking_db" ]   
-     interval: 10s
-     timeout: 5s
-     retries: 5
-     start_period: 10s
+      test: ["CMD-SHELL", "pg_isready -U postgres -d newlook_booking_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
-    restart: unless-stopped 
+    restart: unless-stopped
 
-# booking -service
+
   booking-service:
-   build:
-     context: ./booking-service
-     dockerfile: Dockerfile
-   container_name: booking-service
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
 
-   ports: 
-     - "8084:8084"  
+    container_name: booking-service
 
-   environment:
+    ports:
+      - "8084:8084"
+
+    environment:
       DB_HOST: booking-db
       DB_PORT: 5432
       DB_NAME: newlook_booking_db
       DB_USER: postgres
       DB_PASSWORD: test_123
-
       KAFKA_BROKERS: kafka:29092
-   restart: unless-stopped 
-   depends_on:
-    booking-db:
-      condition: service_healthy
-    kafka:
-       condition: service_healthy    
 
-# notification-db
+    restart: unless-stopped
+
+    depends_on:
+      booking-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+
   notification-db:
     image: postgres:16
     container_name: notification-db
 
     environment:
-      POSTGRES_DB: newlook_notifcation_db
+      POSTGRES_DB: newlook_notification_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: test_123
+
     ports:
-      - "5433:5432" 
+      - "5433:5432"
+
     volumes:
-      - notification-db-data:/var/lib/postgressql/data
+      - notification-db-data:/var/lib/postgresql/data
+
     healthcheck:
-      test: ["CMD-SHELL","pg_isready -u postgres -d newlook_notification_db"] 
+      test:
+        ["CMD-SHELL", "pg_isready -U postgres -d newlook_notification_db"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+
     restart: unless-stopped
-     
-       
-
-
-
-
-  discovery-server:
-    build: ./discovery-server
-    ports:
-      - "8761:8761"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 
   gateway:
     build: ./apiGateway
+
     ports:
       - "9090:9090"
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
-    depends_on:
-      discovery-server:
-        condition: service_healthy
-
-
-  shop-service:
-    build: ./barberService
-    ports:
-      - "8089:8089"
-    environment:
-      DB_URL: jdbc:mysql://shop-db:3306/barberBookingService?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
-    depends_on:
-      discovery-server:
-        condition: service_healthy
-      shop-db:
-        condition: service_healthy
-      kafka-init:
-        condition: service_completed_successfully  
-
-
-  appointment-service:
-    build: ./appoimentservice
-    ports:
-      - "8088:8088"
-    environment:
-      DB_URL: jdbc:mysql://appointment-db:3306/appoinment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      DB_USERNAME: root
-      DB_PASSWORD: test
-      SLOT_SERVICE_URL: http://shop-service:8089
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
-    depends_on:
-      discovery-server:
-        condition: service_healthy
-      appointment-db:
-        condition: service_healthy
-
-
-  shop-db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: barberBookingService
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-
-  appointment-db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: test
-      MYSQL_DATABASE: appoinment_db
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 
   barber-booking-ui:
     build: ./barber-booking-ui
+
     ports:
       - "4200:80"
+
     depends_on:
       - gateway
 
