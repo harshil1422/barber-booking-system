@@ -49,7 +49,7 @@ jobs:
           cache: 'maven'
 
       - name: run-mvn-test
-        run: mvn -B test   
+        run: mvn clean package  
               
 
           
