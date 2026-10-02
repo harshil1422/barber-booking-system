@@ -50,6 +50,12 @@ jobs:
 
       - name: run-mvn-test
         run: mvn clean package  
+
+      - name: verify-jar-creation
+        run: test -f target/auth-service-0.0.1-SNAPSHOT.jar
+
+      - name: docker-image-creation
+        run: docker build -t newlook-auth-service .
               
 
           
