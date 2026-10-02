@@ -1,4 +1,22 @@
 services:
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+
+    container_name: notification-service
+
+    ports:
+      - "8087:8087" 
+    environment: 
+      DB_HOST: notification-db
+      DB_PORT: 5432
+      DB: newlook_notification_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: test_123
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+        
+
 
   kafka:
     image: apache/kafka:4.3.1

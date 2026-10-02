@@ -1,0 +1,63 @@
+
+name: NewLook_CI_V1
+
+on:
+  push: 
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  auth-test:
+    name: auth-service-test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./auth-service
+    env:
+      TEST_DB_URL: jdbc:postgresql://localhost:5432/barber_auth_test
+      TEST_DB_USERNAME: auth_test_user
+      TEST_DB_PASSWORD: auth_test_password
+
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: barber_auth_test
+          POSTGRES_USER: auth_test_user
+          POSTGRES_PASSWORD: auth_test_password
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U auth_test_user -d barber_auth_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      
+      - name: auth-checkout
+        uses: actions/checkout@v4
+
+      - name: java - setup
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: run-mvn-test
+        run: mvn -B test   
+              
+
+          
+
+
+ 
+
+
+            
+
+        

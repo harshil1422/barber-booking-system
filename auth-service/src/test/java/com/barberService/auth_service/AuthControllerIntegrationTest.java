@@ -3,7 +3,11 @@ package com.barberService.auth_service;
 
 
 import com.barberService.auth_service.dto.AuthDtos;
+import com.barberService.auth_service.dto.UserServiceDtos;
+import com.barberService.auth_service.enums.UserRole;
+import com.barberService.auth_service.enums.UserStatus;
 import com.barberService.auth_service.repository.UserRepository;
+import com.barberService.auth_service.service.UserServiceClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,12 +15,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,9 +41,33 @@ class AuthControllerIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
+    @MockBean
+    private UserServiceClient userServiceClient;
+
     @BeforeEach
     void cleanUp() {
         userRepository.deleteAll();
+
+        UserServiceDtos.UserProfileResponse profile =
+                new UserServiceDtos.UserProfileResponse(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "test-user",
+                        "9925785919",
+                        "test@example.com",
+                        null,
+                        UserStatus.ACTIVE,
+                        "en",
+                        0,
+                        null,
+                        List.of(UserRole.USER),
+                        false,
+                        null,
+                        Instant.now()
+                );
+
+        when(userServiceClient.createUser(any()))
+                .thenReturn(profile);
     }
 
     @Test

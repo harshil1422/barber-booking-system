@@ -88,6 +88,9 @@ management:
     health:
       show-details: always
 
+user-service:
+  base-url: ${USER_SERVICE_URL:http://user-service:8088}
+
 logging:
   level:
     root: INFO
