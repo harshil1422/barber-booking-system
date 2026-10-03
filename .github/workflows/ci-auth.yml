@@ -55,7 +55,14 @@ jobs:
         run: test -f target/auth-service-0.0.1-SNAPSHOT.jar
 
       - name: docker-image-creation
-        run: docker build -t newlook-auth-service .
+        run:  docker build -t newlook-auth-service:${{ github.sha }} .
+      
+      - name: trivy-scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: newlook-auth-service:${{ github.sha }}
+          exit-code: '1'
+          severity: CRITICAL,HIGH
               
 
           
