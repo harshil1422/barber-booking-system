@@ -63,6 +63,7 @@ jobs:
           image-ref: newlook-auth-service:${{ github.sha }}
           exit-code: '1'
           severity: CRITICAL,HIGH
+          ignore-unfixed: false
               
 
           
