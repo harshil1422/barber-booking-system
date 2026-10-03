@@ -58,7 +58,7 @@ jobs:
         run:  docker build -t newlook-auth-service:${{ github.sha }} .
       
       - name: trivy-scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: newlook-auth-service:${{ github.sha }}
           exit-code: '1'
